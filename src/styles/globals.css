@@ -1,0 +1,42 @@
+h1 {
+  font-size: 5rem;
+}
+
+.sidebar {
+  background-color: #B90163;
+  color: #fff;
+  height: 100vh;
+  padding-right: 0px;
+  position: fixed;
+}
+
+.nav-item:hover {
+  background-color: #8C0052;
+}
+
+.nav-link {
+  color: #fff;
+  font-size: 33px;
+}
+
+.nav-link:hover {
+  color: #fff;
+}
+
+.nav-link.active {
+  color: #fff;
+}
+
+.btn-secondary {
+  background-color: #8C0052;
+  border-color: #8C0052;
+  width: 250px;
+  height: 70px;
+  font-size: x-large;
+  border-radius: 20px;
+}
+
+.btn-secondary:hover {
+  background-color: #a40158;
+  border-color: #a40158;
+}   

@@ -1,0 +1,10 @@
+$grid-breakpoints: (
+  xs: 0,       // Extra small devices
+  sm: 480px,   // Small devices
+  md: 768px,   // Medium devices
+  lg: 1024px,  // Large devices
+  xl: 1200px,  // Extra large devices
+  xxl: 1600px  // Extra extra large devices
+);
+
+@import "node_modules/bootstrap/scss/bootstrap";

@@ -2,6 +2,7 @@ h1 {
   font-size: 5rem;
 }
 
+/* Sidebar */
 .sidebar {
   background-color: #B90163;
   color: #fff;
@@ -27,6 +28,39 @@ h1 {
   color: #fff;
 }
 
+/* Tabs */
+.nav-tabs {
+  border-color: darkgray;
+}
+
+.nav-tabs .nav-item:hover {
+  background-color: #fff;
+}
+
+.nav-tabs .nav-link{
+  color: black;
+  border: lightgray 1px solid;
+  border-bottom: 1px solid #dee2e6;
+  border-color: darkgray;
+}
+
+.nav-tabs .nav-link.active {
+  border-color: darkgray;
+  border-bottom-color: #fff;
+}
+
+.nav-tabs .nav-link:hover{
+  color: white;
+  background-color: #CC689E;
+}
+
+.nav-tabs .nav-link.active:hover {
+  color: black;
+  background-color: #fff;
+  border-bottom-color: #fff !important;
+}
+
+/* Buttons */
 .btn-secondary {
   background-color: #8C0052;
   border-color: #8C0052;
@@ -40,3 +74,8 @@ h1 {
   background-color: #a40158;
   border-color: #a40158;
 }   
+
+/* Bootstrap */
+.ms-n1 {
+  margin-left: -1.1rem !important;
+}

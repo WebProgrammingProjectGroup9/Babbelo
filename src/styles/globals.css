@@ -39,4 +39,30 @@ h1 {
 .btn-secondary:hover {
   background-color: #a40158;
   border-color: #a40158;
-}   
+}
+
+/* bootstrap */
+.ms-n1 {
+  margin-left: -1.2rem !important;
+}
+
+/* Fade */
+.fade-effect {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 150px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.fade-left {
+  position: fixed;
+  background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+}
+
+.fade-right {
+  position: fixed;
+  right: 0;
+  background: linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+}

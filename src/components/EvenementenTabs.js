@@ -17,7 +17,7 @@ export default function EvenementenTabs() {
                     Aangemeld
                 </Link>
             </li>
-            <li className="nav-item ms-auto me-5">
+            <li className="nav-item ps-3 ">
                 <Link href="/evenementen/swipen" className={`nav-link ${pathname === '/evenementen/swipen' ? 'active' : ''}`} aria-current="page">
                     Verras me
                 </Link>

@@ -30,7 +30,7 @@ export default function Sidebar() {
               </Link>
             </li>
           </ul>
-          <div className="fixed-bottom">
+          <div className="fixed-bottom position-absolute mb-3 ms-5">
             <Link href="/inloggen">
                 <button className="btn btn-secondary m3 my-4 ms-5">Inloggen</button>
             </Link>

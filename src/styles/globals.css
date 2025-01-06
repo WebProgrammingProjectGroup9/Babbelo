@@ -4,6 +4,7 @@ body {
 
 main.col-xxl-9.col-xl-8.align-self-end {
   padding: 0px;
+  width: 73%;
 }
 
 /* Titles */
@@ -19,9 +20,11 @@ h2 {
 .sidebar {
   background-color: #B90163;
   color: #fff;
-  height: 100vh;
+  height: 100%;
+  width: 27%;
   padding-right: 0px;
   position: fixed;
+  z-index: 1000;
 }
 
 .nav-item:hover {
@@ -129,5 +132,5 @@ h2 {
 
 /* Bootstrap */
 .ms-n1 {
-  margin-left: -0.4rem !important;
+  margin-left: -0.5rem !important;
 }

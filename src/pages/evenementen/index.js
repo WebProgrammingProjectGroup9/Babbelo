@@ -8,50 +8,50 @@ export default function evenementen() {
         <h2 className="fixed-title m-4">Aankomende evenementen</h2>
         <div className= "row d-flex flex-nowrap scrollable-row">
         <div className="card card-evenementen">
-            <img src="/images/image.png" class="card-img-top" alt="Evenement"></img>
-            <div class="card-body bordered shadow">
-                <h5 class="card-title">Evenementen 1</h5>
+            <img src="/images/image.png" className="card-img-top" alt="Evenement"></img>
+            <div className="card-body bordered shadow">
+                <h5 className="card-title">Evenementen 1</h5>
                 <ul>
-                    <li class="card-text">soort evenement</li>
-                    <li class="card-text">datum en tijd</li>
-                    <li class="card-text">locatie</li>
-                    <li class="card-text">organistor</li>
+                    <li className="card-text">soort evenement</li>
+                    <li className="card-text">datum en tijd</li>
+                    <li className="card-text">locatie</li>
+                    <li className="card-text">organistor</li>
                 </ul>
             </div>
         </div>
         <div className="card card-evenementen">
-            <img src="/images/image.png" class="card-img-top" alt="Evenement"></img>
-            <div class="card-body bordered shadow">
-                <h5 class="card-title">Evenementen 1</h5>
+            <img src="/images/image.png" className="card-img-top" alt="Evenement"></img>
+            <div className="card-body bordered shadow">
+                <h5 className="card-title">Evenementen 1</h5>
                 <ul>
-                    <li class="card-text">soort evenement</li>
-                    <li class="card-text">datum en tijd</li>
-                    <li class="card-text">locatie</li>
-                    <li class="card-text">organistor</li>
+                    <li className="card-text">soort evenement</li>
+                    <li className="card-text">datum en tijd</li>
+                    <li className="card-text">locatie</li>
+                    <li className="card-text">organistor</li>
                 </ul>
             </div>
         </div>
         <div className="card card-evenementen">
-            <img src="/images/image.png" class="card-img-top" alt="Evenement"></img>
-            <div class="card-body bordered shadow">
-                <h5 class="card-title">Evenementen 1</h5>
+            <img src="/images/image.png" className="card-img-top" alt="Evenement"></img>
+            <div className="card-body bordered shadow">
+                <h5 className="card-title">Evenementen 1</h5>
                 <ul>
-                    <li class="card-text">soort evenement</li>
-                    <li class="card-text">datum en tijd</li>
-                    <li class="card-text">locatie</li>
-                    <li class="card-text">organistor</li>
+                    <li className="card-text">soort evenement</li>
+                    <li className="card-text">datum en tijd</li>
+                    <li className="card-text">locatie</li>
+                    <li className="card-text">organistor</li>
                 </ul>
             </div>
         </div>
         <div className="card card-evenementen">
-            <img src="/images/image.png" class="card-img-top" alt="Evenement"></img>
-            <div class="card-body bordered shadow">
-                <h5 class="card-title">Evenementen 1</h5>
+            <img src="/images/image.png" className="card-img-top" alt="Evenement"></img>
+            <div className="card-body bordered shadow">
+                <h5 className="card-title">Evenementen 1</h5>
                 <ul>
-                    <li class="card-text">soort evenement</li>
-                    <li class="card-text">datum en tijd</li>
-                    <li class="card-text">locatie</li>
-                    <li class="card-text">organistor</li>
+                    <li className="card-text">soort evenement</li>
+                    <li className="card-text">datum en tijd</li>
+                    <li className="card-text">locatie</li>
+                    <li className="card-text">organistor</li>
                 </ul>
             </div>
         </div>
@@ -60,50 +60,50 @@ export default function evenementen() {
         <h2 className="fixed-title m-4">Aankomende evenementen</h2>
         <div className= "row d-flex flex-nowrap scrollable-row">
         <div className="card card-evenementen">
-            <img src="/images/image.png" class="card-img-top" alt="Evenement"></img>
-            <div class="card-body bordered shadow">
-                <h5 class="card-title">Evenementen 1</h5>
+            <img src="/images/image.png" className="card-img-top" alt="Evenement"></img>
+            <div className="card-body bordered shadow">
+                <h5 className="card-title">Evenementen 1</h5>
                 <ul>
-                    <li class="card-text">soort evenement</li>
-                    <li class="card-text">datum en tijd</li>
-                    <li class="card-text">locatie</li>
-                    <li class="card-text">organistor</li>
+                    <li className="card-text">soort evenement</li>
+                    <li className="card-text">datum en tijd</li>
+                    <li className="card-text">locatie</li>
+                    <li className="card-text">organistor</li>
                 </ul>
             </div>
         </div>
         <div className="card card-evenementen">
-            <img src="/images/image.png" class="card-img-top" alt="Evenement"></img>
-            <div class="card-body bordered shadow">
-                <h5 class="card-title">Evenementen 1</h5>
+            <img src="/images/image.png" className="card-img-top" alt="Evenement"></img>
+            <div className="card-body bordered shadow">
+                <h5 className="card-title">Evenementen 1</h5>
                 <ul>
-                    <li class="card-text">soort evenement</li>
-                    <li class="card-text">datum en tijd</li>
-                    <li class="card-text">locatie</li>
-                    <li class="card-text">organistor</li>
+                    <li className="card-text">soort evenement</li>
+                    <li className="card-text">datum en tijd</li>
+                    <li className="card-text">locatie</li>
+                    <li className="card-text">organistor</li>
                 </ul>
             </div>
         </div>
         <div className="card card-evenementen">
-            <img src="/images/image.png" class="card-img-top" alt="Evenement"></img>
-            <div class="card-body bordered shadow">
-                <h5 class="card-title">Evenementen 1</h5>
+            <img src="/images/image.png" className="card-img-top" alt="Evenement"></img>
+            <div className="card-body bordered shadow">
+                <h5 className="card-title">Evenementen 1</h5>
                 <ul>
-                    <li class="card-text">soort evenement</li>
-                    <li class="card-text">datum en tijd</li>
-                    <li class="card-text">locatie</li>
-                    <li class="card-text">organistor</li>
+                    <li className="card-text">soort evenement</li>
+                    <li className="card-text">datum en tijd</li>
+                    <li className="card-text">locatie</li>
+                    <li className="card-text">organistor</li>
                 </ul>
             </div>
         </div>
         <div className="card card-evenementen">
-            <img src="/images/image.png" class="card-img-top" alt="Evenement"></img>
-            <div class="card-body bordered shadow">
-                <h5 class="card-title">Evenementen 1</h5>
+            <img src="/images/image.png" className="card-img-top" alt="Evenement"></img>
+            <div className="card-body bordered shadow">
+                <h5 className="card-title">Evenementen 1</h5>
                 <ul>
-                    <li class="card-text">soort evenement</li>
-                    <li class="card-text">datum en tijd</li>
-                    <li class="card-text">locatie</li>
-                    <li class="card-text">organistor</li>
+                    <li className="card-text">soort evenement</li>
+                    <li className="card-text">datum en tijd</li>
+                    <li className="card-text">locatie</li>
+                    <li className="card-text">organistor</li>
                 </ul>
             </div>
         </div>

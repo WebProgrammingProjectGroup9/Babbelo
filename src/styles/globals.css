@@ -1,13 +1,30 @@
+body {
+  overflow-x: hidden;
+}
+
+main.col-xxl-9.col-xl-8.align-self-end {
+  padding: 0px;
+  width: 73%;
+}
+
+/* Titles */
 h1 {
   font-size: 5rem;
 }
 
+h2 {
+  font-size: 3rem;
+}
+
+/* Sidebar */
 .sidebar {
   background-color: #B90163;
   color: #fff;
-  height: 100vh;
+  height: 100%;
+  width: 27%;
   padding-right: 0px;
   position: fixed;
+  z-index: 1000;
 }
 
 .nav-item:hover {
@@ -27,6 +44,53 @@ h1 {
   color: #fff;
 }
 
+/* Tabs */
+.nav-tabs {
+  background-color: #fff;
+  border-color: darkgray;
+  position: fixed;
+  top: 0;
+  left: auto;
+  width: 90rem;
+}
+
+.nav-tabs .nav-item:hover {
+  background-color: #fff;
+}
+
+.nav-tabs .nav-link{
+  color: black;
+  border: lightgray 1px solid;
+  border-bottom: 1px solid #dee2e6;
+  border-color: darkgray;
+}
+
+.nav-tabs .nav-link.active {
+  border-color: darkgray;
+  border-bottom-color: #fff;
+}
+
+.nav-tabs .nav-link:hover{
+  color: white;
+  background-color: #CC689E;
+}
+
+.nav-tabs .nav-link.active:hover {
+  color: black;
+  background-color: #fff;
+  border-bottom-color: #fff !important;
+}
+
+/* Cards */
+.card {
+  z-index: -1;
+  width: 30rem;
+  margin: none;
+  border: none;
+  height: auto;
+}
+
+/* Buttons */
 .btn-secondary {
   background-color: #8C0052;
   border-color: #8C0052;
@@ -39,12 +103,38 @@ h1 {
 .btn-secondary:hover {
   background-color: #a40158;
   border-color: #a40158;
+} 
+
+/* Evenementen */
+.evenementen-container {
+  margin-top: 7rem;
 }
 
-/* bootstrap */
-.ms-n1 {
-  margin-left: -1.2rem !important;
+/* Scrollable Row */
+.row.d-flex.flex-nowrap {
+  max-height: 33rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  padding: 1rem;
 }
+
+.row.d-flex.flex-nowrap::-webkit-scrollbar {
+  display: none;
+}
+
+.row.d-flex.flex-nowrap {
+  -ms-overflow-style: none;
+  scrollbar-width: none; 
+}
+
+/* Bootstrap */
+.ms-n1 {
+  margin-left: -0.5rem !important;
+}
+
 
 /* Fade */
 .fade-effect {

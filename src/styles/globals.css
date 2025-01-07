@@ -135,24 +135,155 @@ h2 {
   margin-left: -0.5rem !important;
 }
 
-
 /* Fade */
 .fade-effect {
-  position: absolute;
+  position: fixed;
   top: 0;
   bottom: 0;
   width: 150px;
   pointer-events: none;
-  z-index: 1;
+  z-index: 2;
 }
 
 .fade-left {
-  position: fixed;
+  left: 0;
   background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
 }
 
 .fade-right {
-  position: fixed;
   right: 0;
   background: linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+}
+
+.scroll-arrows {
+  position: absolute;
+  bottom: 100px; 
+  left: 50%;
+  transform: translateX(-50%); 
+  display: flex;
+  justify-content: space-between;
+  width: 25%;
+}
+
+.scroll-arrow {
+  background-color: #B90163;
+  border: none;
+  width: 60px;
+  padding: 15px;
+  font-size: 20px;
+  cursor: pointer;
+  color: white;
+  border-radius: 50%; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.scroll-arrow:hover {
+  background-color: #8C0052;
+}
+
+/* Timeline */	
+.timeline-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
+.timeline-container::-webkit-scrollbar {
+  display: none;
+}
+
+.timeline {
+  display: flex;
+  align-items: center;
+  position: relative;
+  height: 200px;
+  width: 100%; 
+  flex-grow: 1;
+  padding-left: 30px; 
+}
+
+.timeline-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #B90163;
+  z-index: 1;
+  transition: left 0.3s ease-out; 
+}
+
+.timeline-item {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  width: 150px;
+  cursor: pointer;
+}
+
+.timeline-circle {
+  width: 20px;
+  height: 20px;
+  background-color: #B90163;
+  border-radius: 50%;
+  position: relative;
+  z-index: 2;
+}
+
+.timeline-circle.active {
+  background-color: #CC689E;
+}
+
+.timeline-box {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  width: 150px;
+}
+
+.timeline-box img {
+  width: 100%;
+  height: auto;
+  border: none;
+}
+
+.timeline-box p {
+  margin: 0;
+  font-size: 12px;
+}
+
+.timeline-item:nth-child(odd) .timeline-box {
+  bottom: 60px;
+}
+
+.timeline-item:nth-child(even) .timeline-box {
+  top: 60px;
+}
+
+.timeline-details {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.timeline-details h4 {
+  margin: 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.timeline-details p {
+  margin: 5px 0 0;
+  font-size: 12px;
+  color: #666;
 }

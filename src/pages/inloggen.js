@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Inloggen() {
   const [showPassword, setShowPassword] = useState(false);
@@ -7,6 +7,13 @@ export default function Inloggen() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -35,6 +42,7 @@ export default function Inloggen() {
       console.log("Bearer Token:", data.token);
 
       localStorage.setItem("token", data.token);
+      setIsLoggedIn(true);
 
       setTimeout(() => {
         window.location.href = "/evenementen";
@@ -70,71 +78,71 @@ export default function Inloggen() {
           </div>
         )}
   
-        <div className="form-group mb-4">
-          <label>Email: </label>
-          <input
-            type="email"
-            className="form-control"
-            placeholder="vul hier je emailadres in"
-            required
-            pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
-            title="De ingevoerde emailadres is geen geldig emailadres"
-            style={{
-              borderRadius: "10px",
-              padding: "15px",
-              fontSize: "15px",
-            }}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-  
-        <div className="form-group mb-4">
-          <label htmlFor="password">Wachtwoord:</label>
-          <div className="input-group">
-            <input
-              type={showPassword ? 'text' : 'password'}
-              name="password"
-              id="password"
-              className="form-control"
-              placeholder="Vul hier je wachtwoord in"
-              pattern="(?=.*[A-Z])(?=.*[0-9]).{8,}"
-              title="Het wachtwoord moet minstens een nummer en een hoofdletter hebben en 8 karakters lang zijn"
-              required
-              style={{
-                borderRadius: "10px 0 0 10px",
-                padding: "15px",
-                fontSize: "15px",
-              }}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <span
-              className="input-group-text"
-              onClick={togglePasswordVisibility}
-              style={{
-                cursor: "pointer",
-                borderRadius: "0 10px 10px 0",
-              }}
-            >
-              <i className={`bi ${showPassword ? 'bi-eye' : 'bi-eye-slash'}`}></i>
-            </span>
-          </div>
-        </div>
-  
-        <div className="form-group mb-4 d-flex justify-content-end align-items-end">
-          <button type="submit" className="btn btn-secondary">
-            Login
-          </button>
-        </div>
-  
-        <div className="form-group mb-0 d-flex justify-content-center align-items-center">
-        <p>
-            Ben je nog niet bekend bij ons? Maak dan eerst een nieuw account aan{' '}
-            <Link href="/registreren">voor jezelf</Link> of{' '}
-            <Link href="/registreren">je organisatie</Link>.
-          </p>
-        </div>
+
+            <div className="form-group mb-4">
+              <label>Email: </label>
+              <input
+                type="email"
+                className="form-control"
+                placeholder="vul hier je emailadres in"
+                required
+                title="De ingevoerde emailadres is geen geldig emailadres"
+                style={{
+                  borderRadius: "10px",
+                  padding: "15px",
+                  fontSize: "15px",
+                }}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+
+            <div className="form-group mb-4">
+              <label htmlFor="password">Wachtwoord:</label>
+              <div className="input-group">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  name="password"
+                  id="password"
+                  className="form-control"
+                  placeholder="Vul hier je wachtwoord in"
+                  pattern="(?=.*[A-Z])(?=.*[0-9]).{8,}"
+                  title="Het wachtwoord moet minstens een nummer en een hoofdletter hebben en 8 karakters lang zijn"
+                  required
+                  style={{
+                    borderRadius: "10px 0 0 10px",
+                    padding: "15px",
+                    fontSize: "15px",
+                  }}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <span
+                  className="input-group-text"
+                  onClick={togglePasswordVisibility}
+                  style={{
+                    cursor: "pointer",
+                    borderRadius: "0 10px 10px 0",
+                  }}
+                >
+                  <i className={`bi ${showPassword ? 'bi-eye' : 'bi-eye-slash'}`}></i>
+                </span>
+              </div>
+            </div>
+
+            <div className="form-group mb-4 d-flex justify-content-end align-items-end">
+              <button type="submit" className="btn btn-secondary">
+                Login
+              </button>
+            </div>
+
+            <div className="form-group mb-0 d-flex justify-content-center align-items-center">
+              <p>
+                Ben je nog niet bekend bij ons? Maak dan eerst een nieuw account aan{' '}
+                <Link href="/registreren">voor jezelf</Link> of{' '}
+                <Link href="/registreren">je organisatie</Link>.
+              </p>
+            </div>
       </form>
     </div>
   );

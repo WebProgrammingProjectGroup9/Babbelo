@@ -40,3 +40,22 @@ h1 {
   background-color: #a40158;
   border-color: #a40158;
 }
+
+.popup {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  background-color: #8C0052;
+  color: white;
+  padding: 15px 25px; /* Add more padding for a smoother look */
+  border-radius: 10px; /* Rounded corners */
+  opacity: 0.75; /* Slightly reduced opacity */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Soft shadow for depth */
+  max-width: 80%;
+  transition: opacity 1s ease, transform 1s ease; /* Smooth transition for appearance */
+}
+
+.popup-message {
+  font-size: 18px;
+}
+

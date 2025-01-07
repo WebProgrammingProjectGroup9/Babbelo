@@ -1,6 +1,27 @@
 import Link from "next/link"
+import { useState, useEffect } from "react";
+import Popup from "../components/Popup";
 
 export default function Sidebar() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");
+
+  useEffect(() => {
+      if (localStorage.getItem("token")) {
+        setIsLoggedIn(true);
+      }
+    }, []);
+
+    const handleLogout = () => {
+      localStorage.removeItem("token");
+      setIsLoggedIn(false);
+      setPopupMessage("Je bent succesvol uitgelogd!");
+    };
+  
+    const handlePopupClose = () => {
+      setPopupMessage("");
+    };
+
     return  (
         <div className="sidebar col-xxl-3 col-xl-4">
           <h1 className="m-5">Babbelo</h1>
@@ -30,11 +51,20 @@ export default function Sidebar() {
               </Link>
             </li>
           </ul>
-          <div className="fixed-bottom position-absolute mb-3 ms-5">
+          {isLoggedIn ? (
+            <div className="fixed-bottom position-absolute mb-3 ms-5">
+            <Link href="/evenementen">
+              <button type="button" className="btn btn-secondary m3 my-4 ms-5" onClick={handleLogout}>Uitloggen</button>
+            </Link>
+          </div>
+          ) : (
+            <div className="fixed-bottom position-absolute mb-3 ms-5">
             <Link href="/inloggen">
                 <button className="btn btn-secondary m3 my-4 ms-5">Inloggen</button>
             </Link>
           </div>
+          )}
+          <Popup message={popupMessage} onClose={handlePopupClose} />
         </div>
     )
 }

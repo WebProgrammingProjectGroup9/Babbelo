@@ -18,7 +18,7 @@ export default function Inloggen() {
     setSuccess(""); 
 
     try {
-      const response = await fetch("http://127.0.0.1:3100/auth/login", {
+      const response = await fetch("http://localhost:3100/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -36,8 +36,9 @@ export default function Inloggen() {
 
       localStorage.setItem("token", data.token);
 
-      // Redirect the user to another page (optional)
-      // For example: window.location.href = "/dashboard";
+      setTimeout(() => {
+        window.location.href = "/evenementen";
+      }, 300);
     } catch (err) {
       setError(err.message);
     }

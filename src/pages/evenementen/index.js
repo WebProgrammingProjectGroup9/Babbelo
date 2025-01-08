@@ -8,7 +8,14 @@ export default function evenementen() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await fetch("http://localhost:3100/event");
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/event`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          method: "GET",
+        });
+
+      
         if (!response.ok) throw new Error("Failed to fetch events");
 
         const data = await response.json();
@@ -18,13 +25,13 @@ export default function evenementen() {
         nextWeek.setDate(today.getDate() + 7);
 
         const sortedData = data.sort((a, b) => {
-          const dateTimeA = new Date(`${a.date}T${a.time}`);
-          const dateTimeB = new Date(`${b.date}T${b.time}`);
+          const dateTimeA = new Date(`${a.date}T${a.startTime}`);
+          const dateTimeB = new Date(`${b.date}T${b.startTime}`);
           return dateTimeA - dateTimeB;
         });
 
         const upcoming = sortedData.filter((event) => {
-          const eventDateTime = new Date(`${event.date}T${event.time}`);
+          const eventDateTime = new Date(`${event.date}T${event.startTime}`);
           return eventDateTime >= today && eventDateTime <= nextWeek;
         });
 
@@ -64,7 +71,8 @@ export default function evenementen() {
                 <ul>
                   <li className="card-text">Categorie: {event.category}</li>
                   <li className="card-text">Datum: {event.date}</li>
-                  <li className="card-text">Tijd: {event.time}</li>
+                  <li className="card-text">Starttijd: {event.startTime}</li>
+                  <li className="card-text">Eindtijd: {event.endTime}</li>
                   <li className="card-text">Organisator: {event.organisator}</li>
                   <li className="card-text">Beschrijving: {event.description}</li>
                 </ul>
@@ -89,7 +97,8 @@ export default function evenementen() {
                     <ul>
                       <li className="card-text">Categorie: {event.category}</li>
                       <li className="card-text">Datum: {event.date}</li>
-                      <li className="card-text">Tijd: {event.time}</li>
+                      <li className="card-text">Starttijd: {event.startTime}</li>
+                      <li className="card-text">Eindtijd: {event.endTime}</li>  
                       <li className="card-text">Organisator: {event.organisator}</li>
                       <li className="card-text">Beschrijving: {event.description}</li>
                     </ul>

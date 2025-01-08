@@ -10,18 +10,18 @@ export default function Detail() {
 	const [catPic, setCat] = useState(null);
 
 	useEffect(() => {
-		if (!id) return; // Ensure `id` exists before fetching
+		if (!id) return; 
 
 		const fetchEvents = async () => {
 			try {
 				const cat = await fetch("https://api.thecatapi.com/v1/images/search");
 				const catdata = await cat.json();
 				setCat(catdata[0].url);
-				const response = await fetch(`http://localhost:3100/event/${id}/participants`, {
+				const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/event/${id}/participants`, {
 					method: "GET",
 					headers: {
 						"Content-Type": "application/json",
-						Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjo2LCJpYXQiOjE3MzYxNjYyMjQsImV4cCI6MTczNzIwMzAyNH0.0lKe7ouafErWfsz7X3l_bm4--Z29DElLydn0xX0VX6g`,
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
 					},
 				});
 
@@ -32,11 +32,11 @@ export default function Detail() {
 				setEvent(eventData);
                 console.log(eventData);
 
-				const organisatorRes = await fetch(`http://localhost:3100/account/${eventData.organisator}`, {
+				const organisatorRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/account/${eventData.organisator}`, {
 					method: "GET",
 					headers: {
 						"Content-Type": "application/json",
-						Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjo2LCJpYXQiOjE3MzYxNjYyMjQsImV4cCI6MTczNzIwMzAyNH0.0lKe7ouafErWfsz7X3l_bm4--Z29DElLydn0xX0VX6g`,
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
 					},
 				});
 				if (!organisatorRes.ok) throw new Error("Failed to fetch organisator");

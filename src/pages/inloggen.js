@@ -3,7 +3,7 @@ import { useState } from "react";
 
 export default function Inloggen() {
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("");
+  const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -23,7 +23,7 @@ export default function Inloggen() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ emailAddress, password }),
       });
 
       if (!response.ok) {
@@ -84,8 +84,8 @@ export default function Inloggen() {
               padding: "15px",
               fontSize: "15px",
             }}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={emailAddress}
+            onChange={(e) => setEmailAddress(e.target.value)}
           />
         </div>
   

@@ -22,6 +22,11 @@ export default function EvenementenTabs() {
                     Verras me
                 </Link>
             </li>
+            <li className="nav-item ps-3">
+                <Link href="/evenementen/nieuw" className={`nav-link ${pathname === '/evenementen/nieuw' ? 'active' : ''}`} aria-current="page">
+                    Nieuw
+                </Link>
+            </li>
         </ul>
     );
 }

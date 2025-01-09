@@ -10,7 +10,7 @@ export default function Profile() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!localStorage.getItem('token')) {
       router.push("/inloggen");
     }
   }, [isLoggedIn, router]);

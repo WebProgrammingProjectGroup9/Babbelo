@@ -10,7 +10,7 @@ export default function Inloggen() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const { login } = useContext(AuthContext); // Use login function from AuthContext
+  const { login } = useContext(AuthContext);
   const router = useRouter();
 
   const togglePasswordVisibility = () => {

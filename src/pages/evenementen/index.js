@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import Link from 'next/link';
 import EvenementenTabs from "@/components/EvenementenTabs";
+import { useRouter } from "next/router";
 
 export default function evenementen() {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [allEventsByCategory, setAllEventsByCategory] = useState({});
+  const router = useRouter();
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -53,6 +55,10 @@ export default function evenementen() {
 
     fetchEvents();
   }, []);
+
+  const handleNewEvent = () => {
+    router.push("/evenementen/nieuw");
+  }
 
   return (
     <div>
@@ -114,6 +120,10 @@ export default function evenementen() {
             </div>
           </div>
         ))}
+      </div>
+
+      <div class="fab-container">
+        <button className="fab" onClick={handleNewEvent}><i class="bi bi-plus"></i></button>
       </div>
     </div>
   );

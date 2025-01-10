@@ -331,5 +331,32 @@ h2 {
   color: #B90163;
 }
 
+/* FAB */
+.fab-container {
+  position: fixed;
+  bottom: 20px; 
+  right: 20px;  
+  z-index: 1000; 
+}
+
+.fab {
+  background-color: #B90163; 
+  color: white;
+  border: none;
+  border-radius: 12px; 
+  width: 56px; 
+  height: 56px; 
+  font-size: 32px; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+.fab:hover {
+  background-color: #8C0052; 
+}
+
 
 

@@ -1,5 +1,7 @@
 body {
   overflow-x: hidden;
+  font-size: 20px;
+  color: black;
 }
 
 main.col-xxl-9.col-xl-8.align-self-end {
@@ -82,7 +84,7 @@ h2 {
 }
 
 /* Cards */
-.card {
+.event-card {
   z-index: -1;
   width: 30rem;
   margin-bottom: 30px;
@@ -288,3 +290,46 @@ h2 {
   font-size: 12px;
   color: #666;
 }
+
+/* detail-link */
+.detail-link {
+  text-decoration: none;
+  width: 33rem;
+  
+}
+
+.detail-link:hover {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: #B90163;
+  border-color: #B90163;
+  font-size: 20px;
+}
+
+.btn-primary:hover {
+  background-color: #8C0052;
+  border-color: #8C0052;
+}
+.btn-primary:focus {
+  border-color: #8C0052 !important;
+  background-color: #8C0052 !important;
+}
+
+.profile-img {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 10px;
+}
+
+/* Spinner */
+.spinner {
+  width: 6rem;
+  height: 6rem;
+  color: #B90163;
+}
+
+
+

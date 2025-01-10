@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Link from 'next/link';
 import EvenementenTabs from "@/components/EvenementenTabs";
 
 export default function evenementen() {
@@ -57,27 +58,29 @@ export default function evenementen() {
     <div>
       <EvenementenTabs />
       <div className="evenementen-container">
-        <h2 className="fixed-title m-4">aankomende evenementen</h2>
+        <h2 className="fixed-title m-4">Aankomende evenementen</h2>
         <div className="row d-flex flex-nowrap scrollable-row">
           {upcomingEvents.map((event) => (
-            <div key={event.eventNumber} className="card card-evenementen">
-              <img
-                src={event.photo !== "none" ? event.photo : "/images/image.png"}
-                className="card-img-top"
-                alt={event.title}
-              />
-              <div className="card-body bordered shadow">
-                <h5 className="card-title">{event.title}</h5>
-                <ul>
-                  <li className="card-text">Categorie: {event.category}</li>
-                  <li className="card-text">Datum: {event.date}</li>
-                  <li className="card-text">Starttijd: {event.startTime}</li>
-                  <li className="card-text">Eindtijd: {event.endTime}</li>
-                  <li className="card-text">Organisator: {event.organisator}</li>
-                  <li className="card-text">Beschrijving: {event.description}</li>
-                </ul>
+            <Link href={`/evenementen/${event.id}`} className="detail-link">
+              <div key={event.id} className="card event-card card-evenementen">
+                <img
+                  src={event.photo !== "none" ? event.photo : "/images/image.png"}
+                  className="card-img-top"
+                  alt={event.title}
+                />
+                <div className="card-body bordered shadow">
+                  <h5 className="card-title">{event.title}</h5>
+                  <ul>
+                    <li className="card-text">Categorie: {event.category}</li>
+                    <li className="card-text">Datum: {event.date}</li>
+                    <li className="card-text">Starttijd: {event.startTime}</li>
+                    <li className="card-text">Eindtijd: {event.endTime}</li>
+                    <li className="card-text">Organisator: {event.organisator?.firstName} {event.organisator?.lastName}</li>
+                    <li className="card-text">Beschrijving: {event.description}</li>
+                  </ul>
+                </div>
               </div>
-            </div>
+              </Link>
           ))}
         </div>
 
@@ -86,7 +89,9 @@ export default function evenementen() {
             <h2 className="m-4">{category}</h2>
             <div className="row d-flex flex-nowrap scrollable-row">
               {events.map((event) => (
-                <div key={event.eventNumber} className="card card-evenementen">
+                <Link href={`/evenementen/${event.id}`} className="detail-link">
+
+                <div key={event.id} className="card card-evenementen">
                   <img
                     src={event.photo !== "none" ? event.photo : "/images/image.png"}
                     className="card-img-top"
@@ -99,11 +104,12 @@ export default function evenementen() {
                       <li className="card-text">Datum: {event.date}</li>
                       <li className="card-text">Starttijd: {event.startTime}</li>
                       <li className="card-text">Eindtijd: {event.endTime}</li>  
-                      <li className="card-text">Organisator: {event.organisator}</li>
+                      <li className="card-text">Organisator: {event.organisator?.firstName} {event.organisator?.lastName}</li>
                       <li className="card-text">Beschrijving: {event.description}</li>
                     </ul>
                   </div>
                 </div>
+                </Link>
               ))}
             </div>
           </div>

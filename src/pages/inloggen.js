@@ -35,6 +35,7 @@ export default function Inloggen() {
       console.log("Bearer Token:", data.token);
 
       localStorage.setItem("token", data.token);
+      localStorage.setItem("account_id", JSON.stringify(data.id));
 
       setTimeout(() => {
         window.location.href = "/evenementen";

@@ -1,5 +1,7 @@
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "../components/AuthContext";
+import { useRouter } from "next/router";
 
 export default function Inloggen() {
   const [showPassword, setShowPassword] = useState(false);
@@ -8,14 +10,17 @@ export default function Inloggen() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  const { login } = useContext(AuthContext);
+  const router = useRouter();
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
   const handleLogin = async (e) => {
-    e.preventDefault(); 
-    setError(""); 
-    setSuccess(""); 
+    e.preventDefault();
+    setError("");
+    setSuccess("");
 
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
@@ -27,17 +32,16 @@ export default function Inloggen() {
       });
 
       if (!response.ok) {
-        throw new Error("Ongeldige inloggegevens."); 
+        throw new Error("Ongeldige inloggegevens.");
       }
 
       const data = await response.json();
-      setSuccess("Je bent succesvol ingelogd!");
-      console.log("Bearer Token:", data.token);
 
-      localStorage.setItem("token", data.token);
+      login(data.token); // Use the login function to update AuthContext
+      setSuccess("Je bent succesvol ingelogd!");
 
       setTimeout(() => {
-        window.location.href = "/evenementen";
+        router.push("/evenementen"); // Redirect after successful login
       }, 300);
     } catch (err) {
       setError(err.message);
@@ -53,23 +57,23 @@ export default function Inloggen() {
         <div className="form-group mb-4 d-flex justify-content-center align-items-center">
           <h1>Babbelo</h1>
         </div>
-  
+
         <div className="form-group mb-3 fs-5">
           <label>Inloggen bij Babbelo: </label>
         </div>
-  
+
         {error && (
           <div className="alert alert-danger" role="alert">
             {error}
           </div>
         )}
-  
+
         {success && (
           <div className="alert alert-success" role="alert">
             {success}
           </div>
         )}
-  
+
         <div className="form-group mb-4">
           <label>Email: </label>
           <input
@@ -77,7 +81,6 @@ export default function Inloggen() {
             className="form-control"
             placeholder="vul hier je emailadres in"
             required
-            pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
             title="De ingevoerde emailadres is geen geldig emailadres"
             style={{
               borderRadius: "10px",
@@ -88,17 +91,16 @@ export default function Inloggen() {
             onChange={(e) => setEmailAddress(e.target.value)}
           />
         </div>
-  
+
         <div className="form-group mb-4">
           <label htmlFor="password">Wachtwoord:</label>
           <div className="input-group">
             <input
-              type={showPassword ? 'text' : 'password'}
+              type={showPassword ? "text" : "password"}
               name="password"
               id="password"
               className="form-control"
               placeholder="Vul hier je wachtwoord in"
-              pattern="(?=.*[A-Z])(?=.*[0-9]).{8,}"
               title="Het wachtwoord moet minstens een nummer en een hoofdletter hebben en 8 karakters lang zijn"
               required
               style={{
@@ -117,25 +119,25 @@ export default function Inloggen() {
                 borderRadius: "0 10px 10px 0",
               }}
             >
-              <i className={`bi ${showPassword ? 'bi-eye' : 'bi-eye-slash'}`}></i>
+              <i className={`bi ${showPassword ? "bi-eye" : "bi-eye-slash"}`}></i>
             </span>
           </div>
         </div>
-  
+
         <div className="form-group mb-4 d-flex justify-content-end align-items-end">
           <button type="submit" className="btn btn-secondary">
             Login
           </button>
         </div>
-  
+
         <div className="form-group mb-0 d-flex justify-content-center align-items-center">
-        <p>
-            Ben je nog niet bekend bij ons? Maak dan eerst een nieuw account aan{' '}
-            <Link href="/registreren">voor jezelf</Link> of{' '}
+          <p>
+            Ben je nog niet bekend bij ons? Maak dan eerst een nieuw account aan{" "}
+            <Link href="/registreren">voor jezelf</Link> of{" "}
             <Link href="/registreren">je organisatie</Link>.
           </p>
         </div>
       </form>
     </div>
   );
-}  
+}

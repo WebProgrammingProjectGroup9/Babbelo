@@ -69,7 +69,7 @@ export default function Nieuw() {
       const data = await response.json();
       console.log("Response:", data);
 
-      router.push("/evenementen");
+      router.push(`/evenementen/${data.id}`);
 
     } catch (error) {
       setErrors(error.message);

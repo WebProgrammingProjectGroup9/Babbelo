@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 export default function Detail() {
   const [event, setEvent] = useState(null);
@@ -162,6 +163,7 @@ export default function Detail() {
                   <h3 className="display-6 text-center">Organisator</h3>
                 </div>
                 <div className="card-body">
+                  <Link href={`/account/${event.organisator.id}`} className="detail-link">
                   <div className="d-flex align-items-center p-1 mb-4">
                     <img 
                       src={event.organisator.profileImgUrl} 
@@ -182,6 +184,7 @@ export default function Detail() {
                       </p>
                     </div>
                   </div>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -228,6 +231,7 @@ export default function Detail() {
               <div className="card-body">
                 <div className="row mt-3">
                   {event.participants.map((participant, index) => (
+                    <Link href={`/account/${participant.id}`} key={participant.id} className="detail-link">
                     <div
                       className="col-12 col-md-6 col-lg-4 mb-4"
                       key={participant.id}
@@ -251,6 +255,7 @@ export default function Detail() {
                         </div>
                       </div>
                     </div>
+                    </Link>
                   ))}
                 </div>
               </div>

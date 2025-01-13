@@ -57,6 +57,13 @@ export default function Profile() {
     }, 2000);
   };
 
+  const formatDate = (dob) => {
+    if (!dob) return "Onbekend";
+    const options = { day: '2-digit', month: 'long', year: 'numeric' };
+    const birthDate = new Date(dob);
+    return birthDate.toLocaleDateString('nl-NL', options);  
+};
+
   const calculateAge = (dob) => {
     if (!dob) return "Onbekend";
     const birthDate = new Date(dob);
@@ -111,7 +118,7 @@ export default function Profile() {
                     </li>
                     <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
                         <strong>Geboortedatum:</strong>
-                        <span>{userData?.dateOfBirth}</span>
+                        <span>{formatDate(userData?.dateOfBirth)}</span>
                     </li>
                     <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
                         <strong>Leeftijd:</strong>

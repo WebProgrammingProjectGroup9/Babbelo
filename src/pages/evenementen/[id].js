@@ -8,6 +8,7 @@ export default function Detail() {
   const router = useRouter();
   const { id } = router.query; 
   const [currentUser, setCurrentUser] = useState(null)
+  
 
   useEffect(() => {
     const userId = localStorage.getItem("account_id");
@@ -103,8 +104,8 @@ export default function Detail() {
 
           {/* Details */}
           <div className="col-lg-6 col-md-12 col-sm-12">
-              <div className="card bg-light shadow-lg shadow-lg p-4 detail-card">
-                  <h1 className="display-5 text-center border-bottom pb-3">{event.title}</h1>
+              <div className="card bg-light shadow-lg shadow-lg p-3 detail-card">
+                  <h1 className="display-5 text-center border-bottom pb-2">{event.title}</h1>
                   <ul className="list-unstyled">
                       <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
                           <strong><i className="bi bi-calendar-event me-2"></i>Datum:</strong>
@@ -193,7 +194,7 @@ export default function Detail() {
           <div className="col-6">
             <div className="card shadow-lg">
               <div className="card-header bg-white">
-                <h3 className="display-6 text-center">Beschrijving</h3>
+                <h3 className="display-6 text-center">Korte beschrijving</h3>
               </div>
               <div className="card-body">
                 <p className="text-justify">{event.description}</p>
@@ -207,7 +208,7 @@ export default function Detail() {
         <div className="col-12">
           <div className="card shadow-lg">
             <div className="card-header bg-white">
-              <h3 className="display-6 text-center">Informatie</h3>
+              <h3 className="display-6 text-center">Extra informatie</h3>
             </div>
             <div className="card-body">
               <p className="text-justify">{event.information}</p>

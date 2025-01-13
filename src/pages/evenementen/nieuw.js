@@ -1,5 +1,5 @@
-import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 
 export default function Nieuw() {
@@ -12,7 +12,7 @@ export default function Nieuw() {
   const [description, setDescription] = useState("");
   const [information, setInformation] = useState("");
   const [category, setCategory] = useState("");
-  const [photo, setPhoto] = useState("");
+  const [photo, setPhoto] = useState(null);  
   const [errors, setErrors] = useState(null);
   const [minDate, setMinDate] = useState(new Date().toISOString().split("T")[0]);
 
@@ -20,6 +20,11 @@ export default function Nieuw() {
   const informationMaxLength = 255;
 
   useEffect(() => {
+    const savedPhoto = localStorage.getItem('croppedPhoto');
+    if (savedPhoto) {
+      setPhoto(savedPhoto);
+    }
+
     //Date
     const now = new Date();
     const formattedDate = now.toISOString().split("T")[0];
@@ -39,18 +44,25 @@ export default function Nieuw() {
     setInformation(e.target.value);
   };
 
-  const handlePhotoChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const photoUrl = URL.createObjectURL(file);
-      setPhoto(photoUrl);
-    }
-  };
+  const addPhoto = () => {
+    router.push("/evenementen/foto");
+  }
 
   async function onSubmit(event) {
     event.preventDefault();
     setIsLoading(true);
     setErrors(null);
+
+    console.log("Verstuurde gegevens:", {
+      title,
+      date,
+      startTime,
+      endTime,
+      description,
+      information,
+      category,
+      photo
+    });
     
     try {   
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/event`, {
@@ -70,6 +82,7 @@ export default function Nieuw() {
       console.log("Response:", data);
 
       router.push(`/evenementen/${data.id}`);
+      localStorage.removeItem('croppedPhoto');
 
     } catch (error) {
       setErrors(error.message);
@@ -199,24 +212,29 @@ export default function Nieuw() {
           </div>
         </div>
 
-        {/* Photo (File Input) */}
-        <div className="row mt-4">
-          <div className="col-12">
-            <label className="form-label">Foto:</label>
-            <input
-              type="file"
-              className="form-control"
-              onChange={handlePhotoChange}
-            />
+        {/* Photo Preview */}
+        {photo && (
+          <div className="row mt-4">
+            <div className="col-12">
+              <img
+                src={photo}
+                alt="Geselecteerde afbeelding"
+                className="img-fluid rounded"
+              />
+            </div>
           </div>
-        </div>
+        )}
+
+        {/* Photo Button */}
+        <a className="btn btn-primary mt-4" onClick={addPhoto}>
+          Foto toevoegen
+        </a>
 
         <div className="form-group mb-4 d-flex justify-content-end align-items-center mt-4 ms-3">
           <button type="submit" className="btn btn-primary" disabled={isLoading} style={{ backgroundColor: "#B90163", borderColor: "#B90163", textDecoration: "none" }}>
-          <Link style={{textDecoration: "none", color: "white"}}href="/evenementen">Annuleren</Link>
-
+            <Link style={{ textDecoration: "none", color: "white" }} href="/evenementen">Annuleren</Link>
           </button>
-          <button className="btn btn-primary ms-3 "  style={{ backgroundColor: "#B90163", borderColor: "#B90163" }}>
+          <button className="btn btn-primary ms-3" style={{ backgroundColor: "#B90163", borderColor: "#B90163" }}>
             Opslaan
           </button>
         </div>

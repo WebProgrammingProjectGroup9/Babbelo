@@ -54,6 +54,7 @@ h2 {
   top: 0;
   left: auto;
   width: 90rem;
+  z-index: 100;
 }
 
 .nav-tabs .nav-item:hover {

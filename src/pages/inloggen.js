@@ -37,13 +37,10 @@ export default function Inloggen() {
 
       const data = await response.json();
 
-<<<<<<< HEAD
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("account_id", JSON.stringify(data.id));
-=======
       login(data.token); // Use the login function to update AuthContext
+      localStorage.setItem("account_id", JSON.stringify(data.id));
+
       setSuccess("Je bent succesvol ingelogd!");
->>>>>>> 82c3174dfdf98f2555c5c8a71ef900014cf91814
 
       setTimeout(() => {
         router.push("/evenementen"); // Redirect after successful login

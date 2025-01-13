@@ -134,6 +134,24 @@ h2 {
   scrollbar-width: none; 
 }
 
+.scrollable-row {
+  display: flex;
+  flex-wrap: nowrap; /* Blijf alles op één rij */
+  overflow-x: auto; /* Voeg horizontaal scrollen toe */
+  gap: 16px; /* Ruimte tussen kaarten */
+}
+
+.scrollable-row::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollable-row::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+
+
 /* Bootstrap */
 .ms-n1 {
   margin-left: -0.5rem !important;

@@ -65,24 +65,41 @@ export default function evenementen() {
       <EvenementenTabs />
       <div className="evenementen-container">
         <h2 className="fixed-title m-4">Aankomende evenementen</h2>
-        <div className="row d-flex flex-nowrap scrollable-row">
+        <div className="row flex-nowrap scrollable-row mb-4  ms-2">
           {upcomingEvents.map((event) => (
             <Link href={`/evenementen/${event.id}`} className="detail-link">
-              <div key={event.id} className="card event-card card-evenementen">
+              <div key={event.id} className="card event-card ">
                 <img
                   src={event.photo !== "none" ? event.photo : "/images/image.png"}
                   className="card-img-top"
                   alt={event.title}
                 />
                 <div className="card-body bordered shadow">
-                  <h5 className="card-title">{event.title}</h5>
-                  <ul>
-                    <li className="card-text">Categorie: {event.category}</li>
-                    <li className="card-text">Datum: {event.date}</li>
-                    <li className="card-text">Starttijd: {event.startTime}</li>
-                    <li className="card-text">Eindtijd: {event.endTime}</li>
-                    <li className="card-text">Organisator: {event.organisator?.firstName} {event.organisator?.lastName}</li>
-                    <li className="card-text">Beschrijving: {event.description}</li>
+                  <h5 className="display-6 text-center border-bottom pb-2">{event.title}</h5>
+                  <ul className="list-unstyled">
+                      <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
+                          <strong><i className="bi bi-calendar-event me-2"></i>Datum:</strong>
+                          <span>{new Date(event.date).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+                      </li>
+                      <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
+                          <strong><i className="bi bi-clock me-2"></i>Begintijd:</strong>
+                          <span>{new Date(`2025-01-01T${event.startTime}`).toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}</span>
+                      </li>
+                      <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
+                          <strong><i className="bi bi-clock-history me-2"></i>Eindtijd:</strong>
+                          <span>{new Date(`2025-01-01T${event.endTime}`).toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}</span>
+                      </li>
+                      <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
+                          <strong><i className="bi bi-bookmark me-2"></i>Categorie:</strong>
+                          <span>{event.category}</span>
+                      </li>
+                      <li className="mb-3 border-bottom pb-1">
+                      <strong className="d-block mb-1">
+                        <i className="bi bi-info-circle me-2"></i>Korte beschrijving:
+                      </strong>
+                      <span>{event.description}</span>
+                    </li>
+
                   </ul>
                 </div>
               </div>
@@ -93,7 +110,7 @@ export default function evenementen() {
         {Object.entries(allEventsByCategory).map(([category, events]) => (
           <div key={category}>
             <h2 className="m-4">{category}</h2>
-            <div className="row d-flex flex-nowrap scrollable-row">
+            <div className="row flex-nowrap scrollable-row mb-4 ms-2">
               {events.map((event) => (
                 <Link href={`/evenementen/${event.id}`} className="detail-link">
 
@@ -104,15 +121,31 @@ export default function evenementen() {
                     alt={event.title}
                   />
                   <div className="card-body bordered shadow">
-                    <h5 className="card-title">{event.title}</h5>
-                    <ul>
-                      <li className="card-text">Categorie: {event.category}</li>
-                      <li className="card-text">Datum: {event.date}</li>
-                      <li className="card-text">Starttijd: {event.startTime}</li>
-                      <li className="card-text">Eindtijd: {event.endTime}</li>  
-                      <li className="card-text">Organisator: {event.organisator?.firstName} {event.organisator?.lastName}</li>
-                      <li className="card-text">Beschrijving: {event.description}</li>
-                    </ul>
+                  <h5 className="display-6 text-center border-bottom pb-2">{event.title}</h5>
+                  <ul className="list-unstyled">
+                      <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
+                          <strong><i className="bi bi-calendar-event me-2"></i>Datum:</strong>
+                          <span>{new Date(event.date).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+                      </li>
+                      <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
+                          <strong><i className="bi bi-clock me-2"></i>Begintijd:</strong>
+                          <span>{new Date(`2025-01-01T${event.startTime}`).toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}</span>
+                      </li>
+                      <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
+                          <strong><i className="bi bi-clock-history me-2"></i>Eindtijd:</strong>
+                          <span>{new Date(`2025-01-01T${event.endTime}`).toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}</span>
+                      </li>
+                      <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
+                          <strong><i className="bi bi-bookmark me-2"></i>Categorie:</strong>
+                          <span>{event.category}</span>
+                      </li>
+                      <li className="mb-3 border-bottom pb-1">
+                      <strong className="d-block mb-1">
+                        <i className="bi bi-info-circle me-2"></i>Korte beschrijving:
+                      </strong>
+                      <span>{event.description}</span>
+                    </li>
+                  </ul>
                   </div>
                 </div>
                 </Link>

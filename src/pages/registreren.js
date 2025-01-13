@@ -56,8 +56,8 @@ export default function Registreren() {
       setPassword("");
     
       setTimeout(() => {
-        window.location.href = "/inloggen"; // Redirect to the login page
-      }, 300);
+        window.location.href = "/inloggen";
+      }, 1000);
     } catch (err) {
       setError(err.message);
     }

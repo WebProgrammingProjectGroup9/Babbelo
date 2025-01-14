@@ -46,11 +46,12 @@ export default function Sidebar() {
             </Link>
           </div>
         )}
+        {isLoggedIn && (
           <Link href="/profiel" className=" nav nav-link nav-item mb-2">
             <i className="bi bi-person-circle pe-2"></i>
             <span className="d-none d-lg-inline">Profiel</span>
           </Link>
-        
+        )}
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 
 const Tijdlijn = () => {
+	const [events, setEvents] = useState([]);
 	const [activeIndex, setActiveIndex] = useState(0);
 	const [visibleEvents, setVisibleEvents] = useState([]);
 	const timelineRef = useRef(null);
@@ -8,8 +9,12 @@ const Tijdlijn = () => {
 	const [centerIndex, setCenterIndex] = useState(0);
 	const [adjacentIndex, setAdjacentIndex] = useState([-1, 1]);
 	const [selectedEvent, setSelectedEvent] = useState(null);
+	const [activeEvent, setActiveEvent] = useState(null);
+	const [loadingActiveEvent, setLoadingActiveEvent] = useState(false);
+	const debouncedHandleScroll = useRef(null);
+	const [loading, setLoading] = useState(true);
 
-	const events = [
+	const eventsHard = [
 		{ date: "0-05-2025", image: "/images/image.png", title: "Event 0", participants: [{ name: "Henk Jan", profileImgUrl: "https://weekbladparty.nl/wp-content/uploads/generated-images/20487/Henkjan-Smits-1275x0.png" }] },
 		{ date: "1-01-2025", image: "/images/image.png", title: "Event 1", participants: [{ name: "Henk Jan", profileImgUrl: "https://weekbladparty.nl/wp-content/uploads/generated-images/20487/Henkjan-Smits-1275x0.png" }] },
 		{ date: "2-03-2025", image: "/images/image.png", title: "Event 2" },
@@ -23,13 +28,39 @@ const Tijdlijn = () => {
 		{ date: "10-03-2025", image: "/images/image.png", title: "Event 10" },
 	];
 
-	const debouncedHandleScroll = useRef(null);
+	const fetchEvents = async () => {
+		try {
+			const token = localStorage.getItem("token");
+			const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/event`, {
+				headers: {
+					Authorization: "Bearer " + token,
+				},
+				method: "GET",
+			});
+
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+
+			const data = await response.json();
+			setEvents(data);
+			setLoading(false);
+		} catch (error) {
+			console.error("Fout bij het ophalen van evenementen:", error);
+		}
+	};
 
 	useEffect(() => {
+		fetchEvents();
+	}, []);
+
+	useEffect(() => {
+		if (loading || events.length === 0) {
+			return;
+		}
 		const handleScroll = () => {
 			const timelineWidth = timelineRef.current.offsetWidth;
 			const timelineLeft = timelineRef.current.getBoundingClientRect().left;
-
 			let newVisibleEvents = [];
 
 			events.forEach((event, index) => {
@@ -43,6 +74,7 @@ const Tijdlijn = () => {
 					}
 				}
 			});
+
 			if (newVisibleEvents.length !== visibleEvents.length || newVisibleEvents.some((value, index) => value !== visibleEvents[index])) {
 				setVisibleEvents(newVisibleEvents);
 				handleScale(newVisibleEvents);
@@ -51,7 +83,7 @@ const Tijdlijn = () => {
 
 		const throttledScrollHandler = () => {
 			const now = Date.now();
-			const throttleDelay = 200;
+			const throttleDelay = 100;
 
 			if (!debouncedHandleScroll.current || now - debouncedHandleScroll.current >= throttleDelay) {
 				debouncedHandleScroll.current = now;
@@ -64,11 +96,11 @@ const Tijdlijn = () => {
 
 		handleScroll();
 
-		return () => {
-			timelineCon.current.removeEventListener("scroll", throttledScrollHandler);
-			window.removeEventListener("resize", throttledScrollHandler);
-		};
-	}, [visibleEvents]);
+		// return () => {
+		// 	timelineCon.current.removeEventListener("scroll", throttledScrollHandler);
+		// 	window.removeEventListener("resize", throttledScrollHandler);
+		// };
+	}, [events, visibleEvents, loading]);
 
 	useEffect(() => {
 		if (activeIndex !== null && !visibleEvents.includes(activeIndex)) {
@@ -77,11 +109,9 @@ const Tijdlijn = () => {
 	}, [visibleEvents, activeIndex]);
 
 	useEffect(() => {
-		console.log("joe");
 		if (activeIndex !== null) {
 			const eventElement = document.getElementById(`event-${activeIndex}`);
 			if (eventElement) {
-				console.log(activeIndex);
 				const item = eventElement.getBoundingClientRect();
 				const timeline = timelineRef.current.getBoundingClientRect();
 				const itemCenter = item.left + item.width / 2;
@@ -96,24 +126,48 @@ const Tijdlijn = () => {
 	}, [activeIndex]);
 
 	const handleItemClick = (index) => {
-		console.log("index", index);
+		const fetchEventParticipants = async () => {
+			try {
+				setLoadingActiveEvent(true);
+				const token = localStorage.getItem("token");
+				const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/event/${events[index].id}/participants`, {
+					headers: {
+						Authorization: "Bearer " + token,
+					},
+					method: "GET",
+				});
+
+				if (!response.ok) {
+					throw new Error(`HTTP error! Status: ${response.status}`);
+				}
+
+				const data = await response.json();
+				setActiveEvent(data);
+			} catch (error) {
+				console.error("Fout bij het ophalen van evenement:", error);
+			} finally {
+				setLoadingActiveEvent(false);
+			}
+		};
 		setActiveIndex(index);
+		console.log("hooooooooi");
+		fetchEventParticipants();
 	};
 
-
-
-
 	const handleEventClick = (index) => {
-		setSelectedEvent(events[index])
-		const modal = new window.bootstrap.Modal(document.getElementById("eventModal"));
-		modal.show();
-	}
+		setSelectedEvent(events[index]);
+	};
 
 	const handleScale = (newVisibleEvents) => {
-		const centerEvent = newVisibleEvents[Math.floor(newVisibleEvents.length / 2)];
-		const adjacentEvents = [centerEvent + 1, centerEvent - 1];
-		setCenterIndex(centerEvent);
-		setAdjacentIndex(adjacentEvents);
+		if (newVisibleEvents.length > 0) {
+			const centerEvent = newVisibleEvents[Math.floor(newVisibleEvents.length / 2)];
+			const adjacentEvents = [centerEvent + 1, centerEvent - 1];
+			setCenterIndex(centerEvent);
+			setAdjacentIndex(adjacentEvents);
+		} else {
+			setCenterIndex(null);
+			setAdjacentIndex([]);
+		}
 	};
 
 	const scrollTimeline = (direction) => {
@@ -122,8 +176,6 @@ const Tijdlijn = () => {
 			timelineRef.current.scrollLeft += direction * scrollAmount;
 		}
 	};
-
-
 
 	return (
 		<div style={{ position: "relative", overflowY: "hidden", height: "100vh" }}>
@@ -139,25 +191,29 @@ const Tijdlijn = () => {
 							<div className={`timeline-circle ${index === activeIndex ? "active" : ""}`}></div>
 							<p>{event.date}</p>
 							<div className="timeline-box">
-								<img src={event.image} alt={`Event ${index}`} className="timeline-image" />
+								<img src={event.photo} alt={`Event ${index}`} className="timeline-image" />
 								{index === activeIndex && (
 									<div className="timeline-details">
 										<h4>{event.title}</h4>
 									</div>
 								)}
 								{index === activeIndex && (
-									<button type="button" onClick={()=> handleEventClick(index)}>
+									<button type="button" onClick={() => handleEventClick(index)}>
 										Lees meer
 									</button>
 								)}
 							</div>
 
-							{index === activeIndex && event.participants && event.participants.length > 0 ? (
-								event.participants.map((participant, index) => (
-									<div key={index} className="timeline-participants">
-										<img src={participant.profileImgUrl} alt={participant.name} />
-									</div>
-								))
+							{index === activeIndex && loadingActiveEvent && <p></p>}
+
+							{index === activeIndex && !loadingActiveEvent && activeEvent && activeEvent.participants && activeEvent.participants.length > 0 ? (
+								<div className="timeline-participants-container">
+									{activeEvent.participants.map((participant, participantIndex) => (
+										<div key={participantIndex} className="timeline-participants">
+											<img src={participant.profileImgUrl} alt={participant.name} className="participant-image" />
+										</div>
+									))}
+								</div>
 							) : (
 								<p></p>
 							)}
@@ -175,32 +231,35 @@ const Tijdlijn = () => {
 				</button>
 			</div>
 			<div className="modal fade" id="eventModal" tabIndex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="eventModalLabel">{selectedEvent ? selectedEvent.title : "Loading..."}</h5>
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div className="modal-body">
-              {selectedEvent ? (
-                <>
-                  <p>{selectedEvent.date}</p>
-                  <img src={selectedEvent.image} alt={selectedEvent.title} className="img-fluid" />
-                  <p>Details about the event...</p>
-                </>
-              ) : (
-                <p>Loading event details...</p>
-              )}
-            </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-          </div>
-        </div>
-      </div>
-			
+				<div className="modal-dialog">
+					<div className="modal-content">
+						<div className="modal-header">
+							<h5 className="modal-title" id="eventModalLabel">
+								{selectedEvent ? selectedEvent.title : "Loading..."}
+							</h5>
+							<button type="button" className="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div className="modal-body">
+							{selectedEvent ? (
+								<>
+									<p>{selectedEvent.date}</p>
+									<img src={selectedEvent.image} alt={selectedEvent.title} className="img-fluid" />
+									<p>Details about the event...</p>
+								</>
+							) : (
+								<p>Loading event details...</p>
+							)}
+						</div>
+						<div className="modal-footer">
+							<button type="button" className="btn btn-secondary" data-dismiss="modal">
+								Close
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	);
 };

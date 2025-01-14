@@ -21,7 +21,7 @@ export default function Detail() {
   
     const fetchEvent = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/event/${id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/event/${id}/participants`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,

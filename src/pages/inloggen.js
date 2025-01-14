@@ -36,6 +36,7 @@ export default function Inloggen() {
       }
 
       const data = await response.json();
+      localStorage.setItem("account_id", JSON.stringify(data.id));
 
       login(data.token); 
       setSuccess("Je bent succesvol ingelogd!");

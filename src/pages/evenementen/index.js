@@ -120,7 +120,7 @@ export default function evenementen() {
                     className="card-img-top"
                     alt={event.title}
                   />
-                  <div className="card-body bordered shadow">
+                  <div className="card-body  shadow">
                   <h5 className="display-6 text-center border-bottom pb-2">{event.title}</h5>
                   <ul className="list-unstyled">
                       <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">

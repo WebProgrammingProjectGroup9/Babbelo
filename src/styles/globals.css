@@ -1,5 +1,7 @@
 body {
   overflow-x: hidden;
+  font-size: 20px;
+  color: black;
 }
 
 main.col-xxl-9.col-xl-8.align-self-end {
@@ -52,6 +54,7 @@ h2 {
   top: 0;
   left: auto;
   width: 90rem;
+  z-index: 100;
 }
 
 .nav-tabs .nav-item:hover {
@@ -82,12 +85,13 @@ h2 {
 }
 
 /* Cards */
-.card {
+.event-card {
   z-index: -1;
   width: 30rem;
+  margin-bottom: 30px;
   margin: none;
   border: none;
-  height: auto;
+  height: auto;;
 }
 
 /* Buttons */
@@ -112,7 +116,7 @@ h2 {
 
 /* Scrollable Row */
 .row.d-flex.flex-nowrap {
-  max-height: 33rem;
+  max-height: 35rem;
   overflow-x: auto;
   overflow-y: hidden;
   display: flex;
@@ -365,3 +369,108 @@ h2 {
   color: #666;
 }
 
+/* detail-link */
+.detail-link {
+  text-decoration: none;
+  width: 33rem;
+  color: black;
+  
+}
+
+.detail-link:hover {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: #B90163;
+  border-color: #B90163;
+  font-size: 20px;
+}
+
+.btn-primary:hover {
+  background-color: #8C0052;
+  border-color: #8C0052;
+}
+.btn-primary:focus {
+  border-color: #8C0052 !important;
+  background-color: #8C0052 !important;
+}
+
+.profile-img {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 10px;
+}
+
+/* Spinner */
+.spinner {
+  width: 6rem;
+  height: 6rem;
+  color: #B90163;
+}
+
+/* FAB */
+.fab-container {
+  position: fixed;
+  bottom: 20px; 
+  right: 20px;  
+  z-index: 1000; 
+}
+
+.fab {
+  background-color: #B90163; 
+  color: white;
+  border: none;
+  border-radius: 12px; 
+  width: 56px; 
+  height: 56px; 
+  font-size: 32px; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+.fab:hover {
+  background-color: #8C0052; 
+}
+
+
+
+.popup {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  background-color: #B90163;
+  color: white;
+  padding: 15px 25px;
+  border-radius: 10px;
+  max-width: 80%;
+  transition: opacity 1s ease, transform 1s ease; 
+}
+
+.popup-message {
+  font-size: 18px;
+}
+
+.profile-box {
+  background-color: white;
+  width: 550px;
+  padding: 30px;
+  text-align: center;
+}
+
+.profile-picture img {
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #ccc;
+}
+
+.profile-info p {
+  font-size: 16px;
+  margin-bottom: 10px;
+}

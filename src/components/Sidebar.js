@@ -9,6 +9,7 @@ export default function Sidebar() {
     <div className="d-flex flex-column flex-lg-column vh-100 justify-content-between sidebar">
       <h1 className="d-none d-lg-block pt-5 ms-4 pb-2 text-center">Babbelo</h1>
 
+      {isLoggedIn &&(
       <ul className="nav flex-lg-column flex-row justify-content-around w-100 unstyled-list">
         <li className="nav-item">
           <Link href="/evenementen" className="nav-link mt-3 pb-5">
@@ -35,6 +36,7 @@ export default function Sidebar() {
           </Link>
         </li>
       </ul>
+      )}
 
       <div className="mt-auto mb-3">
         {!isLoggedIn && (

@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { AuthContext } from "@/components/AuthContext";
 
 export default function Nieuw() {
   const router = useRouter();
@@ -15,6 +16,13 @@ export default function Nieuw() {
   const [photo, setPhoto] = useState(null);  
   const [errors, setErrors] = useState(null);
   const [minDate, setMinDate] = useState(new Date().toISOString().split("T")[0]);
+  const { isLoggedIn } = useContext(AuthContext);
+  
+  useEffect(() => {
+      if (!localStorage.getItem('token')) {
+        router.push("/inloggen");
+      }
+    }, [isLoggedIn, router]);
 
   const maxLength = 75;
 

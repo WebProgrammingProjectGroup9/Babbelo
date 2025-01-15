@@ -1,7 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import ReactCrop, { makeAspectCrop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import { useRouter } from "next/router";
+import { AuthContext } from "@/components/AuthContext";
 
 export default function Foto({ onPhotoSelect }) {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -14,7 +15,8 @@ export default function Foto({ onPhotoSelect }) {
   const aspectRatio = 580 / 387;
   const imageContainerRef = useRef(null);
   const router = useRouter();
-
+  const { isLoggedIn } = useContext(AuthContext);
+  
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -119,6 +121,12 @@ export default function Foto({ onPhotoSelect }) {
   const handleZoomChange = (event) => {
     setScale(event.target.value);
   };
+
+  useEffect(() => {
+    if (!localStorage.getItem('token')) {
+      router.push("/inloggen");
+    }
+  }, [isLoggedIn, router]);
 
   useEffect(() => {
     drawCanvas(); 

@@ -1,24 +1,37 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Link from 'next/link';
 import EvenementenTabs from "@/components/EvenementenTabs";
 import { useRouter } from "next/router";
+import { AuthContext } from "@/components/AuthContext";
 
 export default function evenementen() {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [allEventsByCategory, setAllEventsByCategory] = useState({});
   const router = useRouter();
+  const { isLoggedIn } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (!localStorage.getItem('token')) {
+      router.push("/inloggen");
+    }
+  }, [isLoggedIn, router]);
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          console.log("No token available, skipping fetchEvents");
+          return; 
+        }
+
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/event`, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${token}`,
           },
           method: "GET",
         });
 
-      
         if (!response.ok) throw new Error("Failed to fetch events");
 
         const data = await response.json();
@@ -54,7 +67,8 @@ export default function evenementen() {
     };
 
     fetchEvents();
-  }, []);
+  }, [isLoggedIn]); 
+
 
   const handleNewEvent = () => {
     router.push("/evenementen/nieuw");

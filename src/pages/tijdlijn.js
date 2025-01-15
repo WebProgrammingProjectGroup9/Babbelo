@@ -1,8 +1,18 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
+import { AuthContext } from "@/components/AuthContext";
+import { useRouter } from "next/router";
 
 const Tijdlijn = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const timelineRef = useRef(null);
+  const { isLoggedIn } = useContext(AuthContext);
+  const router = useRouter();
+
+  useEffect(() => {
+      if (!localStorage.getItem('token')) {
+        router.push("/inloggen");
+      }
+    }, [isLoggedIn, router]);
 
   const events = [
     { date: "1-05-2025", image: "/images/image.png", title: "Event 1" },

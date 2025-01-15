@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../components/AuthContext";
+import { AuthContext } from "../../components/AuthContext";
 import { useRouter } from "next/router";
 
 export default function Profile() {
@@ -131,18 +131,21 @@ export default function Profile() {
         )}
 
         <div className="row">
-            <div className="col">
-            <div className="text-center mt-4">
-          <button className="btn btn-secondary" onClick={handleLogout}>
-            Uitloggen
-          </button>
+            <div className="col d-flex justify-content-center gap-3">
+              <div className="text-center mt-3">
+                <button className="btn btn-secondary" onClick={handleLogout}>
+                  Uitloggen
+                </button>
+              </div>
+              <div>
+                <button className="btn btn-secondary mt-3" 
+                  onClick={() => router.push(`/profiel/vrienden?id=${localStorage.getItem("account_id")}`)}
+                  >Vrienden Bekijken
+                </button>
+              </div>
         </div>
-
-            </div>
-        </div>
-
-        
       </div>
     </div>
+  </div>
   );
 }

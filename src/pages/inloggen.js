@@ -36,13 +36,15 @@ export default function Inloggen() {
       }
 
       const data = await response.json();
+
+      login(data.token);
       localStorage.setItem("account_id", JSON.stringify(data.id));
 
       login(data.token); 
       setSuccess("Je bent succesvol ingelogd!");
 
       setTimeout(() => {
-        router.push("/evenementen"); 
+        router.push("/evenementen");
       }, 300);
     } catch (err) {
       setError(err.message);

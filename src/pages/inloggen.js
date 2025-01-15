@@ -37,13 +37,13 @@ export default function Inloggen() {
 
       const data = await response.json();
 
-      login(data.token); // Use the login function to update AuthContext
+      login(data.token);
       localStorage.setItem("account_id", JSON.stringify(data.id));
 
       setSuccess("Je bent succesvol ingelogd!");
 
       setTimeout(() => {
-        router.push("/evenementen"); // Redirect after successful login
+        router.push("/evenementen");
       }, 300);
     } catch (err) {
       setError(err.message);

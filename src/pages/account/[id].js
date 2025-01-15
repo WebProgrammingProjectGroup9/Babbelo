@@ -43,6 +43,40 @@ export default function AccountDetail() {
         }
     }, [id]);
 
+    const handleAddFriend = async () => {
+        const loggedInAccountId = parseInt(localStorage.getItem("account_id"), 10);
+        const visitingAccountId = parseInt(id, 10);
+    
+        console.log("Account 1:", loggedInAccountId, "Account 2:", visitingAccountId);
+    
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/neo4j/request`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+                body: JSON.stringify({
+                    id1: loggedInAccountId,
+                    id2: visitingAccountId
+                })
+            });
+    
+            const responseData = await response.json();
+    
+            if (!response.ok) {
+                throw new Error(`Failed to add friend: ${responseData.message}`);
+            }
+    
+            console.log("Friend request sent successfully:", responseData);
+        } catch (error) {
+            console.error("Error adding friend:", error);
+        }
+    };
+    
+
+    
+
     const calculateAge = (dob) => {
         if (!dob) return "Onbekend";
         const birthDate = new Date(dob);
@@ -103,7 +137,8 @@ export default function AccountDetail() {
                                 <span>{calculateAge(userInfo?.dateOfBirth)}</span>
                             </li>
                         </ul>
-                    </div>
+                        <button className="btn btn-secondary"onClick={handleAddFriend}>Vriend toevoegen</button>
+                    </div>  
                 )}
             </div>
         </div>

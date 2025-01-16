@@ -239,7 +239,8 @@ export default function Registreren() {
         </div>
 
         <div className="row mb-4">
-          <div className="col-md-6">
+          {selected === "particulier" && (
+            <div className="col-md-6">
             <label>Leeftijd:</label>
             <input
               type="date"
@@ -259,6 +260,7 @@ export default function Registreren() {
               }}
             />
           </div>
+          )}
 
           <div className="col-md-6">
             <label>Gender:</label>

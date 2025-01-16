@@ -41,12 +41,15 @@ export default function Detail() {
         if (!response.ok) {
           throw new Error("Failed to fetch event");
         }
+
+       
   
         const eventData = await response.json();
         setEvent(eventData);
-  
+        console.log("Response:", eventData);
         const userJoined = eventData.participants.some(p => String(p.id) === String(currentUser));
         setJoined(userJoined);
+
       } catch (error) {
         console.error("Error fetching event data:", error);
       }
@@ -103,16 +106,14 @@ export default function Detail() {
   return (
     <div className="container mt-5">
         <div className="row align-items-center g-1">
-          {/* Image */}
-          <div className="col-lg-6 col-md-12 col-sm-12 ">
+          <div className="col-lg-6 col-md-12 col-sm-12 p-3">
               <img
-                  src={event.photo}
+                  src={event.photoBase64}
                   alt={`${event.title}'s image`}
                   className="img-fluid shadow-lg rounded"
               />
           </div>
 
-          {/* Details */}
           <div className="col-lg-6 col-md-12 col-sm-12">
               <div className="card bg-light shadow-lg shadow-lg p-3 detail-card">
                   <h1 className="display-5 text-center border-bottom pb-2">{event.title}</h1>
@@ -152,7 +153,6 @@ export default function Detail() {
                       </div>
                   )}
 
-                  {/* Placeholder for Organisator actions */}
                   {isOrganisator && (
                       <div className="alert alert-info text-center ">
                           U bent de organisator van dit event.
@@ -163,7 +163,6 @@ export default function Detail() {
           </div>
         </div>
 
-        {/* Organisator */}
         {event.organisator && (
           <div className="row mt-5 mb-5">
             <div className="col-6">
@@ -201,7 +200,6 @@ export default function Detail() {
         )}
 
 
-        {/* Description & Location */}
         <div className="row mt-5">
           <div className="col-6">
             <div className="card shadow-lg">
@@ -215,7 +213,6 @@ export default function Detail() {
           </div>
         </div>
 
-        {/* Infomration */}
         <div className="row mt-5 mb-5">
         <div className="col-12">
           <div className="card shadow-lg">
@@ -229,7 +226,7 @@ export default function Detail() {
         </div>
       </div>
 
-      {/* Participants */}
+
       {event.participants && event.participants.length > 0 && (
         <div className="row mt-5 mb-5">
           <div className="col-12">

@@ -7,7 +7,7 @@ export default function Sidebar() {
 
   return (
     <div className="d-flex flex-column flex-lg-column vh-100 justify-content-between sidebar">
-      <h1 className="d-none d-lg-block pt-5 ms-4 pb-2 text-center">Babbelo</h1>
+      <h1 className="pt-5 ms-4 pb-2 text-center">Babbelo</h1>
 
       {isLoggedIn &&(
       <ul className="nav flex-lg-column flex-row justify-content-around w-100 unstyled-list">
@@ -38,7 +38,7 @@ export default function Sidebar() {
       </ul>
       )}
 
-      <div className="mt-auto mb-3">
+      <div className="mt-auto mb-5">
         {!isLoggedIn && (
           <div className="mb-2"> 
             <Link href="/inloggen">

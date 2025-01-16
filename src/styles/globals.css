@@ -9,7 +9,6 @@ main.col-xxl-9.col-xl-8.align-self-end {
   width: 73%;
 }
 
-/* Titles */
 h1 {
   font-size: 5rem;
 }
@@ -18,16 +17,30 @@ h2 {
   font-size: 3rem;
 }
 
-/* Sidebar */
 .sidebar-layout {
   position: fixed;
   top: 0;
   left: 0;
   height: 100vh;
-  overflow-y: auto;
   width: 25%;
   background-color: #B90163;
-  color: #fff ;
+  color: #fff;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.sidebar-layout .nav-link span {
+  display: inline;
+}
+
+@media (max-width: 1024px) {
+  .sidebar-layout {
+    width: 250px; /* Keep sidebar visible */
+  }
+
+  .sidebar-layout .nav-link span {
+    display: none; /* Hide text on smaller screens */
+  }
 }
 
 .sidebar-layout h1 {
@@ -45,6 +58,7 @@ h2 {
 .sidebar-layout .profile-link:hover {
   color: #fff;
 }
+
 @media (max-width: 1300px) {
   .sidebar-layout .nav-link {
     font-size: 26px; 
@@ -139,7 +153,6 @@ h2 {
   color: #fff;
 } 
 
-/* Tabs */
 .nav-tabs {
   background-color: #fff;
   border-color: darkgray;
@@ -177,7 +190,6 @@ h2 {
   border-bottom-color: #fff !important;
 }
 
-/* Cards */
 .event-card {
   z-index: -1;
   width: 30rem;
@@ -187,7 +199,6 @@ h2 {
   height: auto;;
 }
 
-/* Buttons */
 .btn-secondary {
   background-color: #8C0052;
   border-color: #8C0052;
@@ -202,12 +213,10 @@ h2 {
   border-color: #a40158;
 } 
 
-/* Evenementen */
 .evenementen-container {
   margin-top: 100px ;
 }
 
-/* Scrollable Row */
 .row.d-flex.flex-nowrap {
   max-height: 35rem;
   overflow-x: auto;
@@ -243,14 +252,10 @@ h2 {
   border-radius: 4px;
 }
 
-
-
-/* Bootstrap */
 .ms-n1 {
   margin-left: -0.5rem !important;
 }
 
-/* Fade */
 .fade-effect {
   position: fixed;
   top: 0;
@@ -296,7 +301,6 @@ h2 {
   background-color: #8C0052;
 }
 
-/* Timeline */	
 .timeline-container {
   position: relative;
   width: 100%;
@@ -403,7 +407,6 @@ h2 {
   color: #666;
 }
 
-/* detail-link */
 .detail-link {
   text-decoration: none;
   width: 33rem;
@@ -437,14 +440,12 @@ h2 {
   margin-bottom: 10px;
 }
 
-/* Spinner */
 .spinner {
   width: 6rem;
   height: 6rem;
   color: #B90163;
 }
 
-/* FAB */
 .fab-container {
   position: fixed;
   bottom: 20px; 
@@ -470,8 +471,6 @@ h2 {
 .fab:hover {
   background-color: #8C0052; 
 }
-
-
 
 .popup {
   position: fixed;
@@ -507,4 +506,16 @@ h2 {
 .profile-info p {
   font-size: 16px;
   margin-bottom: 10px;
+}
+
+.fab {
+  width: 75px;
+  height: 75px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fab i {
+  font-size: 60px;
 }

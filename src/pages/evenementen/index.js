@@ -104,6 +104,10 @@ export default function evenementen() {
                           <span>{new Date(`2025-01-01T${event.endTime}`).toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}</span>
                       </li>
                       <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
+                          <strong><i className="bi bi-geo-alt me-2"></i>Plaats:</strong>
+                          <span>{event.address.city}</span>
+                      </li>
+                      <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
                           <strong><i className="bi bi-bookmark me-2"></i>Categorie:</strong>
                           <span>{event.category}</span>
                       </li>
@@ -148,6 +152,10 @@ export default function evenementen() {
                       <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
                           <strong><i className="bi bi-clock-history me-2"></i>Eindtijd:</strong>
                           <span>{new Date(`2025-01-01T${event.endTime}`).toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}</span>
+                      </li>
+                      <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
+                          <strong><i className="bi bi-geo-alt me-2"></i>Plaats:</strong>
+                          <span>{event.address.city}</span>
                       </li>
                       <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
                           <strong><i className="bi bi-bookmark me-2"></i>Categorie:</strong>

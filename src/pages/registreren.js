@@ -164,9 +164,41 @@ export default function Registreren() {
           <label class="form-check-label" for="radioOrg">Organisatie</label>
         </div>
 
-        <div className="form-group mb-2 fw-bold fs-5">
-          <label>Persoonlijke gegevens:</label>
+        {selected === "organisatie" ? (
+          <div className="form-group mb-4 fw-bold fs-5">
+          <label>Organisatie gegevens:</label>
         </div>
+        ) : (
+          <div className="form-group mb-4 fw-bold fs-5">
+            <label>Persoonlijke gegevens:</label>
+          </div>
+        )}
+
+        
+
+        {selected === "organisatie" && (
+          <>
+          <div className="row form-group mb-4">
+            <div className="col">
+              <label>Organisatienaam:</label>
+              <input
+              type="text"
+              className="form-control"
+              placeholder="Organisatienaam"
+              value={organisationName}
+              onChange={(e) => setOrganisationName(e.target.value)}
+              required
+              style={{
+                borderRadius: "10px",
+                padding: "15px",
+                fontSize: "15px",
+                marginTop: "10px",
+              }}
+              />
+            </div>
+          </div>
+          </>
+        )}
 
         <div className="row mb-4">
           <div className="col-md-6">
@@ -364,6 +396,70 @@ export default function Registreren() {
           />
         </div>
 
+        {selected === "organisatie" && (
+          <>
+
+          {/* <div className="row form-group mb-4">
+            <div className="col">
+              <label>Organisatienaam:</label>
+              <input
+              type="text"
+              className="form-control"
+              placeholder="Organisatienaam"
+              value={organisationName}
+              onChange={(e) => setOrganisationName(e.target.value)}
+              required
+              style={{
+                borderRadius: "10px",
+                padding: "15px",
+                fontSize: "15px",
+                marginTop: "10px",
+              }}
+              />
+            </div>
+          </div> */}
+
+          <div className="row form-group mb-4">
+            <div className="col">
+              <label>Website:</label>
+              <input
+              type="text"
+              className="form-control"
+              placeholder="Website"
+              value={website}
+              onChange={(e) => setWebsite(e.target.value)}
+              style={{
+                borderRadius: "10px",
+                padding: "15px",
+                fontSize: "15px",
+                marginTop: "10px",
+              }}
+              />
+            </div>
+          </div>
+
+          <div className="row form-group mb-4">
+            <div className="col">
+              <label>KVK-nummer:</label>
+              <input
+              type="text"
+              className="form-control"
+              placeholder="KVK-nummer"
+              value={chamberOfCommerce}
+              onChange={(e) => setChamberOfCommerce(e.target.value)}
+              required
+              style={{
+                borderRadius: "10px",
+                padding: "15px",
+                fontSize: "15px",
+                marginTop: "10px",
+              }}
+              />
+            </div>
+          </div>
+          </>
+        )}
+
         <div className="form-group mb-4">
           <label htmlFor="password">Wachtwoord:</label>
           <div className="input-group">
@@ -432,74 +528,6 @@ export default function Registreren() {
           </div>
         </div>
         
-        {selected === "organisatie" && (
-          <>
-
-
-        <div className="form-group mb-2 fw-bold fs-5">
-          <label>Organisatie gegevens:</label>
-        </div>
-
-          <div className="row form-group mb-4">
-            <div className="col">
-              <label>Organisatienaam:</label>
-              <input
-              type="text"
-              className="form-control"
-              placeholder="Organisatienaam"
-              value={organisationName}
-              onChange={(e) => setOrganisationName(e.target.value)}
-              required
-              style={{
-                borderRadius: "10px",
-                padding: "15px",
-                fontSize: "15px",
-                marginTop: "10px",
-              }}
-              />
-            </div>
-          </div>
-
-          <div className="row form-group mb-4">
-            <div className="col">
-              <label>Website:</label>
-              <input
-              type="text"
-              className="form-control"
-              placeholder="Website"
-              value={website}
-              onChange={(e) => setWebsite(e.target.value)}
-              style={{
-                borderRadius: "10px",
-                padding: "15px",
-                fontSize: "15px",
-                marginTop: "10px",
-              }}
-              />
-            </div>
-          </div>
-
-          <div className="row form-group mb-4">
-            <div className="col">
-              <label>KVK-nummer:</label>
-              <input
-              type="text"
-              className="form-control"
-              placeholder="KVK-nummer"
-              value={chamberOfCommerce}
-              onChange={(e) => setChamberOfCommerce(e.target.value)}
-              required
-              style={{
-                borderRadius: "10px",
-                padding: "15px",
-                fontSize: "15px",
-                marginTop: "10px",
-              }}
-              />
-            </div>
-          </div>
-          </>
-        )}
 
         {error && (
           <div className="alert alert-danger" role="alert">

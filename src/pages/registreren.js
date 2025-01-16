@@ -54,7 +54,7 @@ export default function Registreren() {
         body: JSON.stringify({
           firstName,
           lastName,
-          dateOfBirth,
+          dateOfBirth: dateOfBirth === "" ? null : dateOfBirth,
           gender,
           phoneNumber,
           emailAddress: emailAddress.toLowerCase(),

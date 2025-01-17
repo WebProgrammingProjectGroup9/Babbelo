@@ -152,8 +152,12 @@ export default function Profile() {
           </ul>
         </div>
         <div className="text-center mt-3">
-          <button className="btn btn-secondary" onClick={handleLogout}>
+          <button className="btn btn-secondary me-4" onClick={handleLogout}>
             Uitloggen
+          </button>
+          <button className="btn btn-secondary" 
+            onClick={() => router.push(`/profiel/vrienden?id=${localStorage.getItem("account_id")}`)}
+            >Vrienden Bekijken
           </button>
         </div>
       </div>
@@ -196,8 +200,12 @@ export default function Profile() {
           </ul>
         </div>
         <div className="text-center mt-3">
-          <button className="btn btn-secondary" onClick={handleLogout}>
+          <button className="btn btn-secondary me-4" onClick={handleLogout}>
             Uitloggen
+          </button>
+          <button className="btn btn-secondary" 
+            onClick={() => router.push(`/profiel/vrienden?id=${localStorage.getItem("account_id")}`)}
+            >Vrienden Bekijken
           </button>
         </div>
       </div>

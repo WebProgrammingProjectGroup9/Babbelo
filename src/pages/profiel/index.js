@@ -151,7 +151,7 @@ export default function Profile() {
             </li>
           </ul>
         </div>
-        <div className="text-center mt-3">
+        <div className="text-center mt-4">
           <button className="btn btn-secondary me-4" onClick={handleLogout}>
             Uitloggen
           </button>
@@ -199,7 +199,7 @@ export default function Profile() {
             </li>
           </ul>
         </div>
-        <div className="text-center mt-3">
+        <div className="text-center mt-4">
           <button className="btn btn-secondary me-4" onClick={handleLogout}>
             Uitloggen
           </button>

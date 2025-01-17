@@ -169,7 +169,8 @@ export default function AccountDetail() {
     const isFriendRequestSent = friendRequests.includes(parseInt(loggedInAccountId, 10));
     const isFriend = friends.includes(parseInt(id, 10));
 
-    return (
+    return userInfo?.organisationName ? (
+        // wel org
         <div className="container-fluid d-flex justify-content-center align-items-center vh-100">
             <div className="profile-box border shadow-lg rounded-5 p-5">
                 <div className="text-center">
@@ -179,51 +180,111 @@ export default function AccountDetail() {
                             className="rounded-circle"
                         />
                     </div>
-                    <h3 className="mt-3">
-                        {userInfo?.firstName} {userInfo?.lastName}
-                    </h3>
+                    <h3 className="mt-3">{userInfo?.organisationName}</h3>
                 </div>
-
-                {loading ? (
-                    <p>Gegevens laden...</p>
-                ) : error ? (
-                    <p className="text-danger">{error}</p>
-                ) : (
-                    <div className="profile-info mt-4">
-                        <ul className="list-unstyled">
-                            <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
-                                <strong>E-mailadres:</strong>
-                                <span>{userInfo?.emailAddress}</span>
-                            </li>
-                            <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
-                                <strong>Telefoonnummer:</strong>
-                                <span>{userInfo?.phoneNumber}</span>
-                            </li>
-                            <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
-                                <strong>Gender:</strong>
-                                <span>{userInfo?.gender}</span>
-                            </li>
-                            <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
-                                <strong>Geboortedatum:</strong>
-                                <span>{formatDate(userInfo?.dateOfBirth)}</span>
-                            </li>
-                            <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
-                                <strong>Leeftijd:</strong>
-                                <span>{calculateAge(userInfo?.dateOfBirth)}</span>
-                            </li>
-                        </ul>
-                        {!isFriendRequestSent && !isFriend && id !== loggedInAccountId && (
-                            <button className="btn btn-secondary" onClick={handleAddFriend}>
-                                Vriend Toevoegen
-                            </button>
-                        )}
-                        {isFriend && id !== loggedInAccountId && (
-                            <button className="btn btn-secondary" onClick={handleUnfriend}>
-                                Vriend Verwijderen
-                            </button>
-                        )}
+                <div className="profile-info mt-4">
+                    <ul className="list-unstyled">
+                        <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
+                            <strong>Contact Persoon:</strong>
+                            <span>{userInfo?.firstName} {userInfo?.lastName}</span>
+                        </li>
+                        <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
+                            <strong>Gender:</strong>
+                            <span>{userInfo?.gender}</span>
+                        </li>
+                        <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
+                            <strong>E-mailadres:</strong>
+                            <span>{userInfo?.emailAddress}</span>
+                        </li>
+                        <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
+                            <strong>Telefoonnummer:</strong>
+                            <span>{userInfo?.phoneNumber}</span>
+                        </li>
+                        <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
+                            <strong>Website:</strong>
+                            <span>{userInfo?.website || "Geen website"}</span>
+                        </li>
+                        <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
+                            <strong>KvK:</strong>
+                            <span>{userInfo?.chamberOfCommerce}</span>
+                        </li>
+                        <li className="list-group-item">
+                            <div className="row">
+                                <div className="col-4 text-start pe-4">
+                                    <strong>Adres gegevens:</strong>
+                                </div>
+                                <div className="col-8 text-end ps-4">
+                                    <div>{userInfo?.address.streetName} {userInfo?.address.houseNumber}</div>
+                                    <div>{userInfo?.address.city}</div>
+                                    <div>{userInfo?.address.zipCode}</div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div className="text-center mt-3">
+                    {!isFriendRequestSent && !isFriend && id !== loggedInAccountId && (
+                        <button className="btn btn-secondary me-4" onClick={handleAddFriend}>
+                            Vriend Toevoegen
+                        </button>
+                    )}
+                    {isFriend && id !== loggedInAccountId && (
+                        <button className="btn btn-secondary" onClick={handleUnfriend}>
+                            Vriend Verwijderen
+                        </button>
+                    )}
+                </div>
+            </div>
+        </div>
+    ) : (
+        // geen org
+        <div className="container-fluid d-flex justify-content-center align-items-center vh-100">
+            <div className="profile-box border shadow-lg rounded-5 p-5">
+                <div className="text-center">
+                    <div className="profile-picture">
+                        <img
+                            src={userInfo?.profileImgUrl}
+                            className="rounded-circle"
+                        />
                     </div>
-                )}
+                    <h3 className="mt-3">{userInfo?.firstName} {userInfo?.lastName}</h3>
+                </div>
+                <div className="profile-info mt-4">
+                    <ul className="list-unstyled">
+                        <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
+                            <strong>E-mailadres:</strong>
+                            <span>{userInfo?.emailAddress}</span>
+                        </li>
+                        <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
+                            <strong>Telefoonnummer:</strong>
+                            <span>{userInfo?.phoneNumber}</span>
+                        </li>
+                        <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
+                            <strong>Gender:</strong>
+                            <span>{userInfo?.gender}</span>
+                        </li>
+                        <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
+                            <strong>Geboortedatum:</strong>
+                            <span>{formatDate(userInfo?.dateOfBirth)}</span>
+                        </li>
+                        <li className="mb-3 border-bottom pb-1 d-flex justify-content-between">
+                            <strong>Leeftijd:</strong>
+                            <span>{calculateAge(userInfo?.dateOfBirth)}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div className="text-center mt-3">
+                    {!isFriendRequestSent && !isFriend && id !== loggedInAccountId && (
+                        <button className="btn btn-secondary me-4" onClick={handleAddFriend}>
+                            Vriend Toevoegen
+                        </button>
+                    )}
+                    {isFriend && id !== loggedInAccountId && (
+                        <button className="btn btn-secondary" onClick={handleUnfriend}>
+                            Vriend Verwijderen
+                        </button>
+                    )}
+                </div>
             </div>
         </div>
     );

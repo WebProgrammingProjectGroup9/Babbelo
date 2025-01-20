@@ -1,246 +1,346 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { AuthContext } from "@/components/AuthContext";
+import ReactCrop, { makeAspectCrop } from "react-image-crop";
+import "react-image-crop/dist/ReactCrop.css";
 
 export default function Nieuw() {
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
-  const [title, setTitle] = useState("");
-  const [date, setDate] = useState("");
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
-  const [description, setDescription] = useState("");
-  const [information, setInformation] = useState("");
-  const [category, setCategory] = useState("");
-  const [photo, setPhoto] = useState(null);  
-  const [errors, setErrors] = useState(null);
-  const [minDate, setMinDate] = useState(new Date().toISOString().split("T")[0]);
-  const { isLoggedIn } = useContext(AuthContext);
-  
-  useEffect(() => {
-      if (!localStorage.getItem('token')) {
-        router.push("/inloggen");
-      }
-    }, [isLoggedIn, router]);
+	const router = useRouter();
+	const [cropping, setCropping] = useState(true);
+	const [isLoading, setIsLoading] = useState(false);
+	const [title, setTitle] = useState("");
+	const [date, setDate] = useState("");
+	const [startTime, setStartTime] = useState("");
+	const [endTime, setEndTime] = useState("");
+	const [description, setDescription] = useState("");
+	const [information, setInformation] = useState("");
+	const [category, setCategory] = useState("");
+	const [photo, setPhoto] = useState("");
+	const [errors, setErrors] = useState(null);
+	const [minDate, setMinDate] = useState(new Date().toISOString().split("T")[0]);
+	const { isLoggedIn } = useContext(AuthContext);
+	const [selectedImage, setSelectedImage] = useState(null);
+	const [crop, setCrop] = useState(null);
+	const [completedCrop, setCompletedCrop] = useState(null);
+	const [imageRef, setImageRef] = useState(null);
+	const [scale, setScale] = useState(1);
+	const [position, setPosition] = useState({ x: 0, y: 0 });
+	const previewCanvasRef = useRef(null);
+	const aspectRatio = 580 / 387;
+	const imageContainerRef = useRef(null);
 
-  const maxLength = 75;
+	useEffect(() => {
+		if (!localStorage.getItem("token")) {
+			router.push("/inloggen");
+		}
+	}, [isLoggedIn, router]);
 
-  useEffect(() => {
-    const savedPhoto = localStorage.getItem('croppedPhoto');
-    if (savedPhoto) {
-      setPhoto(savedPhoto);
-    }
+	const maxLength = 75;
 
-    //Date
-    const now = new Date();
-    const formattedDate = now.toISOString().split("T")[0];
-    setDate(formattedDate);
-  
-    //Time
-    const formattedTime = now.toTimeString().slice(0, 5); 
-    setStartTime(formattedTime);
-    setEndTime(formattedTime);
-  }, []);
-  
-  const handleDescriptionChange = (e) => {
-    setDescription(e.target.value);
-  };
+	useEffect(() => {
+		//Date
+		const now = new Date();
+		const formattedDate = now.toISOString().split("T")[0];
+		setDate(formattedDate);
 
-  const handleInformationChange = (e) => {
-    setInformation(e.target.value);
-  };
+		//Time
+		const formattedTime = now.toTimeString().slice(0, 5);
+		setStartTime(formattedTime);
+		setEndTime(formattedTime);
+	}, []);
 
-  const addPhoto = () => {
-    router.push("/evenementen/foto");
-  }
+	const handleDescriptionChange = (e) => {
+		setDescription(e.target.value);
+	};
 
-  async function onSubmit(event) {
-    event.preventDefault();
-    setIsLoading(true);
-    setErrors(null);
+	const handleInformationChange = (e) => {
+		setInformation(e.target.value);
+	};
 
-    console.log("Verstuurde gegevens:", {
-      title,
-      date,
-      startTime,
-      endTime,
-      description,
-      information,
-      category,
-      photo
-    });
-    
-    try {   
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/event`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",  
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify({ title, date, startTime, endTime, description, information, category, photo }),
-      });
-    
-      if (!response.ok) {
-        throw new Error("Failed to submit the event");
-      }
-    
-      const data = await response.json();
-      console.log("Response:", data);
+	async function onSubmit(event) {
+		event.preventDefault();
+		setIsLoading(true);
+		setErrors(null);
 
-      router.push(`/evenementen/${data.id}`);
-      localStorage.removeItem('croppedPhoto');
+		console.log("Verstuurde gegevens:", {
+			title,
+			date,
+			startTime,
+			endTime,
+			description,
+			information,
+			category,
+			photo,
+		});
 
-    } catch (error) {
-      setErrors(error.message);
-    } finally {
-      setIsLoading(false);
-    }
-  }
-  
-  return (
-    <div className="container-fluid p-2 justify-content-center align-items-center col-xxl-8 col-xl-9">
-      <form
-        className="pe-5 ps-5 pt-4 pb-2 border shadow-lg rounded-5 mt-4"
-        onSubmit={onSubmit}
-      >
-        {/* App name */}
-        <div className="form-group mb-4 d-flex justify-content-center align-items-center">
-          <h1>Babbelo</h1>
-        </div>
+		try {
+			const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/event`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
+				},
+				body: JSON.stringify({ title, date, startTime, endTime, description, information, category, photo }),
+			});
 
-        {/* Title */}
-        <div className="row">
-          <div className="col-12">
-            <label className="form-label">Titel:</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Titel"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-            />
-          </div>
-        </div>
+			if (!response.ok) {
+				throw new Error("Failed to submit the event");
+			}
 
-        {/* Date */}
-        <div className="row mt-4">
-          <div className="col-sm-12 col-lg-6 col-md-6">
-            <label className="form-label">Datum:</label>
-            <input
-              type="date"
-              className="form-control"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              required
-              min={minDate}
-            />
-          </div>
-        </div>
+			const data = await response.json();
+			localStorage.removeItem("croppedPhoto");
+			router.push(`/evenementen/${data.id}`);
+		} catch (error) {
+			setErrors(error.message);
+		} finally {
+			setIsLoading(false);
+		}
+	}
+	const handleImageUpload = (event) => {
+		const file = event.target.files[0];
+		if (file) {
+			const reader = new FileReader();
+			reader.onload = () => {
+				setSelectedImage(reader.result);
+				setCropping(true);
+			};
+			reader.readAsDataURL(file);
+		}
+	};
 
-        {/* Time */}
-        <div className="row mt-4">
-          <div className="col-sm-12 col-lg-6 col-md-6">
-            <label className="form-label">Starttijd:</label>
-            <input
-              type="time"
-              className="form-control"
-              value={startTime}
-              onChange={(e) => setStartTime(e.target.value)}
-              required
-            />
-          </div>
+	const onImageLoad = (event) => {
+		const { width, height } = event.currentTarget;
+		const initialCrop = makeAspectCrop(
+			{
+				unit: "%",
+				width: 90,
+			},
+			aspectRatio,
+			width,
+			height
+		);
+		setCrop(initialCrop);
+		setImageRef(event.currentTarget);
+	};
 
-          <div className="col-sm-12 col-lg-6 col-md-6">
-            <label className="form-label">Eindtijd:</label>
-            <input
-              type="time"
-              className="form-control"
-              value={endTime}
-              onChange={(e) => setEndTime(e.target.value)}
-              required
-            />
-          </div>
-        </div>
+	const drawCanvas = () => {
+		if (!completedCrop || !imageRef || !previewCanvasRef.current) {
+			return;
+		}
 
-        {/* Category */}
-        <div className="row mt-4">
-          <div className="col-12">
-            <label className="form-label">Categorie:</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Categorie"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              required
-            />
-          </div>
-        </div>
+		const canvas = previewCanvasRef.current;
+		const ctx = canvas.getContext("2d");
 
-        {/* Description */}
-        <div className="row mt-4">
-          <div className="col-12">
-            <label className="form-label">Korte beschrijving:</label>
-            <textarea
-              className="form-control"
-              placeholder="Korte beschrijving"
-              required
-              maxLength={maxLength}
-              rows={1}
-              value={description}
-              onChange={handleDescriptionChange}
-              style={{ resize: "none" }}
-            />
-            <div className="text-muted">
-              {description.length}/{maxLength}
+		const scaleX = imageRef.naturalWidth / imageRef.width;
+		const scaleY = imageRef.naturalHeight / imageRef.height;
+
+		const pixelRatio = window.devicePixelRatio;
+		canvas.width = 580 * pixelRatio;
+		canvas.height = 387 * pixelRatio;
+
+		ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+		ctx.imageSmoothingQuality = "high";
+
+		ctx.drawImage(imageRef, completedCrop.x * scaleX, completedCrop.y * scaleY, completedCrop.width * scaleX, completedCrop.height * scaleY, 0, 0, 580 * scale, 387 * scale);
+	};
+
+	const handleSave = () => {
+		drawCanvas();
+		const canvas = previewCanvasRef.current;
+		if (!canvas) return;
+
+		canvas.toBlob((blob) => {
+			if (!blob) {
+				console.error("Failed to create Blob from canvas");
+				return;
+			}
+			const reader = new FileReader();
+			reader.onloadend = () => {
+				const base64data = reader.result;
+
+				const img = new Image();
+				img.src = base64data;
+				img.onload = () => {
+					const canvas = document.createElement("canvas");
+					const ctx = canvas.getContext("2d");
+
+					const maxWidth = 800;
+					const maxHeight = 533;
+					const ratio = Math.min(maxWidth / img.width, maxHeight / img.height);
+					const width = img.width * ratio;
+					const height = img.height * ratio;
+
+					canvas.width = width;
+					canvas.height = height;
+					ctx.drawImage(img, 0, 0, width, height);
+
+					const compressedBase64 = canvas.toDataURL("image/jpeg", 0.7);
+
+					if (typeof compressedBase64 === "string" && compressedBase64.startsWith("data:image/jpeg;base64,")) {
+						setPhoto(compressedBase64);
+						setCropping(false);
+					} else {
+						console.error("Invalid Base64 image data");
+					}
+				};
+			};
+			reader.readAsDataURL(blob);
+		}, "image/jpeg");
+	};
+
+	const handleZoomChange = (event) => {
+		setScale(event.target.value);
+	};
+
+	useEffect(() => {
+		if (!localStorage.getItem("token")) {
+			router.push("/inloggen");
+		}
+	}, [isLoggedIn, router]);
+
+	useEffect(() => {
+		drawCanvas();
+	}, [completedCrop, scale]);
+
+	return (
+		<div className="container-fluid p-2 justify-content-center align-items-center col-xxl-8 col-xl-9">
+			<form className="pe-5 ps-5 pt-4 pb-2 border shadow-lg rounded-5 mt-4" onSubmit={onSubmit}>
+				<div className="form-group mb-4 d-flex justify-content-center align-items-center">
+					<h1>Babbelo</h1>
+				</div>
+
+				<div className="row">
+					<div className="col-12">
+						<label className="form-label">Titel:</label>
+						<input type="text" className="form-control" placeholder="Titel" value={title} onChange={(e) => setTitle(e.target.value)} required />
+					</div>
+				</div>
+
+				<div className="row mt-4">
+					<div className="col-sm-12 col-lg-6 col-md-6">
+						<label className="form-label">Datum:</label>
+						<input type="date" className="form-control" value={date} onChange={(e) => setDate(e.target.value)} required min={minDate} />
+					</div>
+				</div>
+
+				<div className="row mt-4">
+					<div className="col-sm-12 col-lg-6 col-md-6">
+						<label className="form-label">Starttijd:</label>
+						<input type="time" className="form-control" value={startTime} onChange={(e) => setStartTime(e.target.value)} required />
+					</div>
+
+					<div className="col-sm-12 col-lg-6 col-md-6">
+						<label className="form-label">Eindtijd:</label>
+						<input type="time" className="form-control" value={endTime} onChange={(e) => setEndTime(e.target.value)} required />
+					</div>
+				</div>
+
+				<div className="row mt-4">
+					<div className="col-12">
+						<label className="form-label">Categorie:</label>
+						<input type="text" className="form-control" placeholder="Categorie" value={category} onChange={(e) => setCategory(e.target.value)} required />
+					</div>
+				</div>
+
+				<div className="row mt-4">
+					<div className="col-12">
+						<label className="form-label">Korte beschrijving:</label>
+						<textarea className="form-control" placeholder="Korte beschrijving" required maxLength={maxLength} rows={1} value={description} onChange={handleDescriptionChange} style={{ resize: "none" }} />
+						<div className="text-muted">
+							{description.length}/{maxLength}
+						</div>
+					</div>
+				</div>
+
+				<div className="row mt-4">
+					<div className="col-12">
+						<label className="form-label">Meer informatie:</label>
+						<textarea className="form-control" placeholder="Meer informatie" required rows={17} value={information} onChange={handleInformationChange} />
+					</div>
+				</div>
+
+				{photo && (
+					<div className="row mt-4">
+						<div className="col-12">
+							<img src={photo} alt="Geselecteerde afbeelding" className="img-fluid rounded" />
+						</div>
+					</div>
+				)}
+				<div>
+					<div className="row my-4">
+            <div className="col-9">
+						<input type="file" accept="image/*" onChange={handleImageUpload} className="form-control" />
             </div>
-          </div>
-        </div>
+						<button type="button" onClick={handleSave} className="btn btn-primary col-3">
+							Foto Opslaan
+						</button>
+					</div>
 
-        {/* Information */}
-        <div className="row mt-4">
-          <div className="col-12">
-            <label className="form-label">Meer informatie:</label>
-            <textarea
-              className="form-control"
-              placeholder="Meer informatie"
-              required
-              rows={17}
-              value={information}
-              onChange={handleInformationChange}
-            />
-          </div>
-        </div>
+					{selectedImage && cropping && (
+						<div className="text-center">
+							<ReactCrop
+								crop={crop}
+								onChange={(newCrop) => setCrop(newCrop)}
+								onComplete={(c) => setCompletedCrop(c)}
+								aspect={aspectRatio}
+								style={{
+									maxWidth: "100%",
+									maxHeight: "400px",
+									position: "relative",
+									margin: "0 auto",
+								}}>
+								<div
+									ref={imageContainerRef}
+									style={{
+										position: "relative",
+										cursor: "move",
+										transform: `scale(${scale}) translate(${position.x}px, ${position.y}px)`,
+									}}>
+									<img
+										src={selectedImage}
+										onLoad={onImageLoad}
+										alt="Crop afbeelding"
+										style={{
+											maxWidth: "100%",
+											maxHeight: "400px",
+											borderRadius: "8px",
+											transform: `scale(${scale})`,
+											transformOrigin: "top left",
+										}}
+									/>
+								</div>
+							</ReactCrop>
 
-        {/* Photo Preview */}
-        {photo && (
-          <div className="row mt-4">
-            <div className="col-12">
-              <img
-                src={photo}
-                alt="Geselecteerde afbeelding"
-                className="img-fluid rounded"
-              />
-            </div>
-          </div>
-        )}
+							<div className="mt-4">
+								<label>Zoom:</label>
+								<input type="range" min="1" max="3" step="0.1" value={scale} onChange={handleZoomChange} className="form-range" />
+							</div>
 
-        {/* Photo Button */}
-        <a className="btn btn-primary mt-4" onClick={addPhoto}>
-          Foto toevoegen
-        </a>
+							<canvas
+								ref={previewCanvasRef}
+								style={{
+									display: "none",
+									width: 580,
+									height: 387,
+									borderRadius: "8px",
+								}}
+							/>
+						</div>
+					)}
+				</div>
 
-        <div className="form-group mb-4 d-flex justify-content-end align-items-center mt-4 ms-3">
-          <button type="submit" className="btn btn-primary" disabled={isLoading} style={{ backgroundColor: "#B90163", borderColor: "#B90163", textDecoration: "none" }}>
-            <Link style={{ textDecoration: "none", color: "white" }} href="/evenementen">Annuleren</Link>
-          </button>
-          <button className="btn btn-primary ms-3" style={{ backgroundColor: "#B90163", borderColor: "#B90163" }}>
-            Opslaan
-          </button>
-        </div>
-      </form>
-    </div>
-  );
+				<div className="form-group mb-4 d-flex justify-content-end align-items-center mt-4 ms-3">
+					<button className="btn btn-primary" disabled={isLoading} style={{ backgroundColor: "#B90163", borderColor: "#B90163", textDecoration: "none" }}>
+						<Link style={{ textDecoration: "none", color: "white" }} href="/evenementen">
+							Annuleren
+						</Link>
+					</button>
+					<button type="submit" className="btn btn-primary ms-3" style={{ backgroundColor: "#B90163", borderColor: "#B90163" }}>
+						Opslaan
+					</button>
+				</div>
+			</form>
+		</div>
+	);
 }

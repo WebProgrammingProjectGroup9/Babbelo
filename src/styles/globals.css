@@ -159,7 +159,6 @@ h2 {
   background: linear-gradient(to left, rgb(255, 255, 255), rgba(255, 255, 255, 0));
 }
 
-
 /* Timeline */
 .timeline-container {
   position: relative;
@@ -168,10 +167,14 @@ h2 {
   align-items: center;
   width: 100%;
   min-height: 100vh; 
-  overflow-x: hidden;
+  overflow-x: scroll;
   padding: 0 10%;
   box-sizing: border-box;
   flex-direction: column; 
+}
+
+.timeline-container::-webkit-scrollbar {
+  display: none;
 }
 
 .timeline {
@@ -203,14 +206,14 @@ h2 {
 }
 
 .timeline-line {
-  position: absolute;
-  top: 50%;
-  left: 0;
+  position: fixed;
+  top: 50%; 
+  left: 30%;
   height: 3px;
   background-color: #B90163;
   width: 100%;
   transform: translateY(-50%);
-  transition: transform 0.3s ease-out;
+
 }
 
 .timeline-item {
@@ -404,6 +407,8 @@ h2 {
 
   .timeline {
     padding-left: 100%;
+    padding-right: 100%;
+
   }
   
   .timeline-item {

@@ -47,25 +47,81 @@ export default function Tijdlijn() {
     if (timelineRef.current && events.length > 0) {
       const activeEvent = timelineRef.current.children[index];
       if (activeEvent) {
+        // Bereken de breedte van de tijdlijn en het actieve item
         const timelineWidth = timelineRef.current.offsetWidth;
         const eventWidth = activeEvent.offsetWidth;
-
-        const scrollPosition = activeEvent.offsetLeft - (timelineWidth / 2) + (eventWidth / 2);
-
+  
+        // Bereken de scrollpositie voor gecentreerd scrollen
+        const scrollPosition =
+          activeEvent.offsetLeft - timelineWidth / 2 + eventWidth / 2;
+  
+        // Zorg ervoor dat de scrollpositie niet negatief is
         const minScrollPosition = 0;
-
         const finalScrollPosition = Math.max(scrollPosition, minScrollPosition);
-
+  
+        // Update de tijdlijn met een overgangseffect
         timelineRef.current.style.transition = "transform 0.3s ease-out";
         timelineRef.current.style.transform = `translateX(-${finalScrollPosition}px)`;
       }
     }
   };
+  
+  useEffect(() => {
+    const handleScroll = () => {
+      if (timelineRef.current) {
+        const timelineItems = Array.from(timelineRef.current.children);
+        const scrollPosition = window.scrollY;
+  
+        // Zoek het dichtstbijzijnde item
+        const closestIndex = timelineItems.reduce(
+          (closest, item, index) => {
+            const rect = item.getBoundingClientRect();
+            const offsetTop = rect.top + window.scrollY;
+            const distance = Math.abs(scrollPosition - offsetTop);
+  
+            return distance < closest.distance
+              ? { distance, index }
+              : closest;
+          },
+          { distance: Infinity, index: 0 }
+        ).index;
+  
+        setActiveIndex(closestIndex);
+      }
+    }
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (timelineRef.current) {
+        const timelineItems = Array.from(timelineRef.current.children);
+        const scrollPosition = window.scrollY;
+  
+        const closestIndex = timelineItems.reduce((closest, item, index) => {
+          const rect = item.getBoundingClientRect();
+          const offsetTop = rect.top + window.scrollY;
+          const distance = Math.abs(scrollPosition - offsetTop);
+  
+          return distance < closest.distance
+            ? { distance, index }
+            : closest;
+        }, { distance: Infinity, index: 0 }).index;
+  
+        setActiveIndex(closestIndex);
+      }
+    };
+  
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+  
 
   useEffect(() => {
     if (events.length > 0) {
       const now = new Date();
-      const closestEventIndex = events.findIndex((event) => new Date(event.date) >= now);
+      const closestEventIndex = events.findIndex((event) => new Date(event.date).setHours(0, 0, 0, 0) >= now.setHours(0, 0, 0, 0));
 
       if (closestEventIndex === -1) {
         setActiveIndex(events.length - 1);
@@ -96,7 +152,6 @@ export default function Tijdlijn() {
 
   return (
     <div style={{ position: "relative", display: "flex", flexDirection: "column", height: "100vh" }}>
-      {loading && <p>Loading events...</p>}
       <div className="fade-right"></div>
       <div className="fade-left"></div>
   

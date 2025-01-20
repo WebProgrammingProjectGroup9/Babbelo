@@ -108,7 +108,7 @@ export default function Detail() {
         <div className="row align-items-center g-1">
           <div className="col-lg-6 col-md-12 col-sm-12 p-3">
               <img
-                  src={event.photoBase64}
+                  src={event.photo}
                   alt={`${event.title}'s image`}
                   className="img-fluid shadow-lg rounded"
               />

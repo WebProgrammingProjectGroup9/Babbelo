@@ -84,7 +84,7 @@ export default function evenementen() {
             <Link href={`/evenementen/${event.id}`} className="detail-link">
               <div key={event.id} className="card event-card ">
                 <img
-                  src={event.photoBase64 !== "none" ? event.photoBase64 : "/images/image.png"}
+                  src={event.photo !== "none" ? event.photo : "/images/image.png"}
                   className="card-img-top"
                   alt={event.title}
                 />
@@ -130,7 +130,7 @@ export default function evenementen() {
 
                 <div key={event.id} className="card card-evenementen">
                   <img
-                    src={event.photoBase64 !== "none" ? event.photoBase64 : "/images/image.png"}
+                    src={event.photo !== "none" ? event.photo : "/images/image.png"}
                     className="card-img-top"
                     alt={event.title}
                   />

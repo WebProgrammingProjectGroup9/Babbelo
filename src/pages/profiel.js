@@ -88,7 +88,7 @@ export default function Profile() {
         <div className="text-center">
           <div className="profile-picture">
             <img
-              src={userData?.photoBase64}
+              src={userData?.profileImgUrl}
               className="rounded-circle"
             />
           </div>

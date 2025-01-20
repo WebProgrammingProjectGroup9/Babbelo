@@ -138,9 +138,9 @@ export default function Registreren() {
           <label>Registreren als:</label>
         </div>
 
-        <div class="form-check form-check-inline mb-4">  
+        <div className="form-check form-check-inline mb-4">  
           <input 
-          class="form-check-input" 
+          className="form-check-input" 
           type="radio" 
           name="inlineRadioOptions" 
           id="radioUser" 
@@ -148,12 +148,12 @@ export default function Registreren() {
           checked={selected === "particulier"}
           onChange={(e) => setSelected(e.target.value)}
           />
-          <label class="form-check-label" for="radioUser" >Particulier</label>
+          <label className="form-check-label" for="radioUser" >Particulier</label>
         </div>
 
-        <div class="form-check form-check-inline">
+        <div className="form-check form-check-inline">
           <input  
-          class="form-check-input" 
+          className="form-check-input" 
           type="radio" 
           name="inlineRadioOptions" 
           id="radioOrg" 
@@ -161,7 +161,7 @@ export default function Registreren() {
           checked={selected === "organisatie"}
           onChange={(e) => setSelected(e.target.value)}
           />
-          <label class="form-check-label" for="radioOrg">Organisatie</label>
+          <label className="form-check-label" for="radioOrg">Organisatie</label>
         </div>
 
         {selected === "organisatie" ? (

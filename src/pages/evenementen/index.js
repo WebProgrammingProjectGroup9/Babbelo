@@ -177,8 +177,8 @@ export default function evenementen() {
         ))}
       </div>
 
-      <div class="fab-container">
-        <button className="fab" onClick={handleNewEvent}><i class="bi bi-plus"></i></button>
+      <div className="fab-container">
+        <button className="fab" onClick={handleNewEvent}><i className="bi bi-plus"></i></button>
       </div>
     </div>
   );

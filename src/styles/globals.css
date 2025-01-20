@@ -519,3 +519,13 @@ h2 {
 .fab i {
   font-size: 60px;
 }
+
+.swipe-container{
+  width: 50%;
+}
+
+.btn-swipe {
+  width: 100px;
+  height: 100px;
+  margin: 20px;
+}

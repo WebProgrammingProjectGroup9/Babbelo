@@ -36,14 +36,13 @@ export default function Inloggen() {
       }
 
       const data = await response.json();
-
-      login(data.token); // Use the login function to update AuthContext
       localStorage.setItem("account_id", JSON.stringify(data.id));
 
+      login(data.token); 
       setSuccess("Je bent succesvol ingelogd!");
 
       setTimeout(() => {
-        router.push("/evenementen"); // Redirect after successful login
+        router.push("/evenementen"); 
       }, 300);
     } catch (err) {
       setError(err.message);
@@ -134,9 +133,7 @@ export default function Inloggen() {
 
         <div className="form-group mb-0 d-flex justify-content-center align-items-center">
           <p>
-            Ben je nog niet bekend bij ons? Maak dan eerst een nieuw account aan{" "}
-            <Link href="/registreren">voor jezelf</Link> of{" "}
-            <Link href="/registreren">je organisatie</Link>.
+            Ben je nog niet bekend bij ons? Maak dan eerst <Link href="registreren">hier</Link> een nieuw account aan
           </p>
         </div>
       </form>

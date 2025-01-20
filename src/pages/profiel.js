@@ -52,6 +52,8 @@ export default function Profile() {
   const handleLogout = () => {
     logout();
     alert("Je bent succesvol uitgelogd!");
+    localStorage.removeItem("token");
+    localStorage.removeItem("account_id");
     setTimeout(() => {
       router.push("/inloggen");
     }, 2000);

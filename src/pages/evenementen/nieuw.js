@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { AuthContext } from "@/components/AuthContext";
 
 export default function Nieuw() {
   const router = useRouter();
@@ -15,9 +16,15 @@ export default function Nieuw() {
   const [photo, setPhoto] = useState(null);  
   const [errors, setErrors] = useState(null);
   const [minDate, setMinDate] = useState(new Date().toISOString().split("T")[0]);
+  const { isLoggedIn } = useContext(AuthContext);
+  
+  useEffect(() => {
+      if (!localStorage.getItem('token')) {
+        router.push("/inloggen");
+      }
+    }, [isLoggedIn, router]);
 
   const maxLength = 75;
-  const informationMaxLength = 255;
 
   useEffect(() => {
     const savedPhoto = localStorage.getItem('croppedPhoto');
@@ -175,10 +182,10 @@ export default function Nieuw() {
         {/* Description */}
         <div className="row mt-4">
           <div className="col-12">
-            <label className="form-label">Beschrijving:</label>
+            <label className="form-label">Korte beschrijving:</label>
             <textarea
               className="form-control"
-              placeholder="Beschrijving"
+              placeholder="Korte beschrijving"
               required
               maxLength={maxLength}
               rows={1}
@@ -195,20 +202,15 @@ export default function Nieuw() {
         {/* Information */}
         <div className="row mt-4">
           <div className="col-12">
-            <label className="form-label">Informatie:</label>
+            <label className="form-label">Meer informatie:</label>
             <textarea
               className="form-control"
-              placeholder="Informatie"
+              placeholder="Meer informatie"
               required
-              rows={3}
-              maxLength={informationMaxLength}
+              rows={17}
               value={information}
               onChange={handleInformationChange}
-              style={{ resize: "none" }}
             />
-            <div className="text-muted">
-              {information.length}/{informationMaxLength}
-            </div>
           </div>
         </div>
 

@@ -1,6 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
-import { useRouter } from "next/router";
-import Link from "next/link";
+import React, { useState, useRef } from "react";
 
 export default function Tijdlijn() {
   const [events, setEvents] = useState([]);

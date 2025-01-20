@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
+import { AuthContext } from "@/components/AuthContext";
 
 export default function AccountDetail() {
     const [userInfo, setUserInfo] = useState(null);
@@ -7,6 +8,14 @@ export default function AccountDetail() {
     const [error, setError] = useState("");
     const router = useRouter();
     const { id } = router.query;
+    const { isLoggedIn } = useContext(AuthContext);
+
+    useEffect(() => {
+        if (!localStorage.getItem("token")) {
+            router.push("/inloggen");
+        }
+    }
+    , [isLoggedIn, router]);
 
     useEffect(() => {
         const account_id = localStorage.getItem("account_id");

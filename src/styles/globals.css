@@ -19,15 +19,108 @@ h2 {
 }
 
 /* Sidebar */
-.sidebar {
-  background-color: #B90163;
-  color: #fff;
-  height: 100%;
-  width: 27%;
-  padding-right: 0px;
+.sidebar-layout {
   position: fixed;
-  z-index: 1000;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  overflow-y: auto;
+  width: 25%;
+  background-color: #B90163;
+  color: #fff ;
 }
+
+.sidebar-layout h1 {
+  font-size: 60px;
+}
+
+.sidebar-layout .btn {
+  margin-top: 90px;
+  margin-bottom: 25px; 
+}
+.sidebar-layout .profile-link {
+  margin-top: 10px;
+}
+
+.sidebar-layout .profile-link:hover {
+  color: #fff;
+}
+@media (max-width: 1300px) {
+  .sidebar-layout .nav-link {
+    font-size: 26px; 
+  }
+
+  .sidebar-layout h1 {
+    font-size: 48px;
+  }
+
+  .sidebar-layout .btn {
+    margin-bottom: 25px; 
+  }
+
+  .sidebar-layout .profile-link {
+    margin-bottom: 50px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .sidebar-layout .nav-link {
+    font-size: 27px; 
+  }
+
+  .sidebar-layout h1 {
+    font-size: 50px;
+  }
+
+  .sidebar-layout .btn {
+    margin-bottom: 25px; 
+  }
+
+  .sidebar-layout .profile-link {
+    margin-bottom: 50px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar-layout .nav-link {
+    font-size: 20px; 
+  }
+
+  .sidebar-layout h1 {
+    font-size: 40px; 
+  }
+
+  .sidebar-layout .btn {
+    margin-bottom: 20px; 
+  }
+
+  .sidebar-layout .profile-link {
+    margin-bottom: 50px;
+  }
+}
+
+@media (max-width: 576px) {
+  .sidebar-layout .nav-link {
+    font-size: 18px; 
+  }
+
+  .sidebar-layout h1 {
+    font-size: 35px; 
+  }
+
+  .sidebar-layout .btn {
+    margin-bottom: 10px; 
+  }
+
+  .sidebar-layout .profile-link {
+    margin-bottom: 50px;
+  }
+}
+
+.nav-link {
+  color: #fff;
+}
+
 
 .nav-item:hover {
   background-color: #8C0052;
@@ -44,7 +137,7 @@ h2 {
 
 .nav-link.active {
   color: #fff;
-}
+} 
 
 /* Tabs */
 .nav-tabs {
@@ -111,7 +204,7 @@ h2 {
 
 /* Evenementen */
 .evenementen-container {
-  margin-top: 7rem;
+  margin-top: 100px ;
 }
 
 /* Scrollable Row */
@@ -133,6 +226,24 @@ h2 {
   -ms-overflow-style: none;
   scrollbar-width: none; 
 }
+
+.scrollable-row {
+  display: flex;
+  flex-wrap: nowrap; 
+  overflow-x: auto; 
+  gap: 16px; 
+}
+
+.scrollable-row::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollable-row::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+
 
 /* Bootstrap */
 .ms-n1 {

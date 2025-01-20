@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { AuthContext } from "@/components/AuthContext";
 
 export default function Detail() {
   const [event, setEvent] = useState(null);
@@ -9,13 +10,21 @@ export default function Detail() {
   const router = useRouter();
   const { id } = router.query; 
   const [currentUser, setCurrentUser] = useState(null)
+  const { isLoggedIn } = useContext(AuthContext);
   
+  
+  useEffect(() => {
+    if (!localStorage.getItem('token')) {
+      router.push("/inloggen");
+    }
+  }, [isLoggedIn, router]);
 
   useEffect(() => {
     const userId = localStorage.getItem("account_id");
     setCurrentUser(userId);
+    
   }, []);
-  
+
   useEffect(() => {
     if (!id || !currentUser) return;
   

@@ -1,5 +1,7 @@
 import Link from "next/link";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AuthContext } from "../components/AuthContext";
+import { useRouter } from "next/router";
 
 export default function Registreren() {
   const [showPassword, setShowPassword] = useState(false);
@@ -10,17 +12,38 @@ export default function Registreren() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [zipCode, setZipCode] = useState("");
+  const [streetName, setStreetName] = useState("");
+  const [houseNumber, setHouseNumber] = useState("");
+  const [city, setCity] = useState("");
+  const [chamberOfCommerce, setChamberOfCommerce] = useState("");
+  const [organisationName, setOrganisationName] = useState("");
+  const [website, setWebsite] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [selected, setSelected] = useState("particulier");
+
+  const { login } = useContext(AuthContext);
+  const router = useRouter();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
+
+    if (password !== confirmPassword) {
+      setError("De wachtwoorden komen niet overeen.");
+      return;
+    }
 
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/register`, {
@@ -34,8 +57,15 @@ export default function Registreren() {
           dateOfBirth,
           gender,
           phoneNumber,
-          emailAddress,
+          emailAddress: emailAddress.toLowerCase(),
           password,
+          streetName,
+          houseNumber,
+          zipCode,
+          city,
+          organisationName,
+          website,
+          chamberOfCommerce
         }),
       });
 
@@ -54,16 +84,45 @@ export default function Registreren() {
       setPhoneNumber("");
       setEmailAddress("");
       setPassword("");
-    
+      setConfirmPassword("");
+      setZipCode("");
+      setStreetName("");
+      setHouseNumber("");
+      setCity("");
+      setChamberOfCommerce("");
+      setOrganisationName("");
+      setWebsite("");
+
+      const loginResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ emailAddress: emailAddress.toLowerCase(), password }),
+      });
+
+      if (!loginResponse.ok) {
+        throw new Error("Account is aangemaakt, maar automatisch inloggen is mislukt.");
+      }
+
+      const loginData = await loginResponse.json();
+
+      localStorage.setItem("account_id", loginData.id);
+      login(loginData.token); 
+      localStorage.setItem("token", loginData.token); 
+      setSuccess("Je bent succesvol ingelogd!");
+
       setTimeout(() => {
-        window.location.href = "/inloggen";
-      }, 1000);
+        router.push("/evenementen");
+      }, 500);
+
     } catch (err) {
       setError(err.message);
     }
   };
 
   const currentDate = new Date().toISOString().split("T")[0];
+
 
   return (
     <div className="container-fluid p-2 justify-content-center align-items-center col-xxl-8 col-xl-9">
@@ -73,6 +132,36 @@ export default function Registreren() {
       >
         <div className="form-group mb-4 d-flex justify-content-center align-items-center">
           <h1>Babbelo</h1>
+        </div>
+
+        <div className="form-group mb-2 fw-bold fs-5">
+          <label>Registreren als:</label>
+        </div>
+
+        <div class="form-check form-check-inline mb-4">  
+          <input 
+          class="form-check-input" 
+          type="radio" 
+          name="inlineRadioOptions" 
+          id="radioUser" 
+          value="particulier" 
+          checked={selected === "particulier"}
+          onChange={(e) => setSelected(e.target.value)}
+          />
+          <label class="form-check-label" for="radioUser" >Particulier</label>
+        </div>
+
+        <div class="form-check form-check-inline">
+          <input  
+          class="form-check-input" 
+          type="radio" 
+          name="inlineRadioOptions" 
+          id="radioOrg" 
+          value="organisatie" 
+          checked={selected === "organisatie"}
+          onChange={(e) => setSelected(e.target.value)}
+          />
+          <label class="form-check-label" for="radioOrg">Organisatie</label>
         </div>
 
         <div className="form-group mb-2 fw-bold fs-5">
@@ -161,7 +250,7 @@ export default function Registreren() {
           </div>
         </div>
 
-        {/* <div className="row mb-2">
+        <div className="row mb-2">
           <div className="col-md-6">
             <label>Adresgegevens:</label>
             <input
@@ -169,6 +258,7 @@ export default function Registreren() {
               className="form-control"
               placeholder="Straat"
               value={streetName}
+              onChange={(e) => setStreetName(e.target.value)}
               required
               style={{
                 borderRadius: "10px",
@@ -187,6 +277,7 @@ export default function Registreren() {
               className="form-control"
               placeholder="Huisnummer"
               value={houseNumber}
+              onChange={(e) => setHouseNumber(e.target.value)}
               required
               style={{
                 borderRadius: "10px",
@@ -202,8 +293,8 @@ export default function Registreren() {
               className="form-control"
               placeholder="Postcode"
               value={zipCode}
+              onChange={(e) => setZipCode(e.target.value)}
               required
-              pattern="^[a-zA-Z]{4}[0-9]{2}"
               style={{
                 borderRadius: "10px",
                 padding: "15px",
@@ -221,6 +312,7 @@ export default function Registreren() {
               className="form-control"
               placeholder="Plaats"
               value={city}
+              onChange={(e) => setCity(e.target.value)}
               required
               style={{
                 borderRadius: "10px",
@@ -230,7 +322,7 @@ export default function Registreren() {
               }}
             />
           </div>
-        </div> */}
+        </div>
 
         <div className="form-group mb-4 mt-4">
           <label>Telefoonnummer:</label>
@@ -261,7 +353,7 @@ export default function Registreren() {
             value={emailAddress}
             onChange={(e) => setEmailAddress(e.target.value)}
             required
-            pattern="[a-z0-9._%-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+            pattern="^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
             title="De ingevoerde emailadres is geen geldig emailadres"
             style={{
               borderRadius: "10px",
@@ -306,6 +398,108 @@ export default function Registreren() {
             </span>
           </div>
         </div>
+
+        <div className="form-group mb-4">
+          <label htmlFor="confirmPassword">Bevestig Wachtwoord:</label>
+          <div className="input-group">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="confirmPassword"
+              id="confirmPassword"
+              className="form-control"
+              placeholder="Bevestig Wachtwoord"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              style={{
+                borderRadius: "10px 0 0 10px",
+                padding: "15px",
+                fontSize: "15px",
+                marginTop: "10px",
+              }}
+            />
+            <span
+              className="input-group-text"
+              onClick={toggleConfirmPasswordVisibility}
+              style={{
+                cursor: "pointer",
+                borderRadius: "0 10px 10px 0",
+                marginTop: "10px",
+              }}
+            >
+              <i className={`bi ${showPassword ? "bi-eye" : "bi-eye-slash"}`}></i>
+            </span>
+          </div>
+        </div>
+        
+        {selected === "organisatie" && (
+          <>
+
+
+        <div className="form-group mb-2 fw-bold fs-5">
+          <label>Organisatie gegevens:</label>
+        </div>
+
+          <div className="row form-group mb-4">
+            <div className="col">
+              <label>Organisatienaam:</label>
+              <input
+              type="text"
+              className="form-control"
+              placeholder="Organisatienaam"
+              value={organisationName}
+              onChange={(e) => setOrganisationName(e.target.value)}
+              required
+              style={{
+                borderRadius: "10px",
+                padding: "15px",
+                fontSize: "15px",
+                marginTop: "10px",
+              }}
+              />
+            </div>
+          </div>
+
+          <div className="row form-group mb-4">
+            <div className="col">
+              <label>Website:</label>
+              <input
+              type="text"
+              className="form-control"
+              placeholder="Website"
+              value={website}
+              onChange={(e) => setWebsite(e.target.value)}
+              style={{
+                borderRadius: "10px",
+                padding: "15px",
+                fontSize: "15px",
+                marginTop: "10px",
+              }}
+              />
+            </div>
+          </div>
+
+          <div className="row form-group mb-4">
+            <div className="col">
+              <label>KVK-nummer:</label>
+              <input
+              type="text"
+              className="form-control"
+              placeholder="KVK-nummer"
+              value={chamberOfCommerce}
+              onChange={(e) => setChamberOfCommerce(e.target.value)}
+              required
+              style={{
+                borderRadius: "10px",
+                padding: "15px",
+                fontSize: "15px",
+                marginTop: "10px",
+              }}
+              />
+            </div>
+          </div>
+          </>
+        )}
 
         {error && (
           <div className="alert alert-danger" role="alert">

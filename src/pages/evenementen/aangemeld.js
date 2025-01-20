@@ -8,9 +8,9 @@ export default function Aangemeld() {
   const { isLoggedIn } = useContext(AuthContext);
   const [registeredEvents, setRegisteredEvents] = useState([]);
   const router = useRouter();
-  const userId = localStorage.getItem("account_id");
 
   useEffect(() => {
+    const userId = localStorage.getItem("account_id");
     const token = localStorage.getItem("token");
     if (!token) {
       router.push("/inloggen");

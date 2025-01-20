@@ -176,7 +176,7 @@ export default function AccountDetail() {
                 <div className="text-center">
                     <div className="profile-picture">
                         <img
-                            src={userInfo?.profileImgUrl}
+                            src={userInfo?.profileImgUrl || `https://eu.ui-avatars.com/api/?name=${userInfo?.firstName}+${userInfo?.lastName}&size=250`}
                             className="rounded-circle"
                         />
                     </div>
@@ -229,7 +229,7 @@ export default function AccountDetail() {
                         </button>
                     )}
                     {isFriend && id !== loggedInAccountId && (
-                        <button className="btn btn-secondary" onClick={handleUnfriend}>
+                        <button className="btn btn-secondary me-4" onClick={handleUnfriend}>
                             Vriend Verwijderen
                         </button>
                     )}
@@ -243,7 +243,7 @@ export default function AccountDetail() {
                 <div className="text-center">
                     <div className="profile-picture">
                         <img
-                            src={userInfo?.profileImgUrl}
+                            src={userInfo?.profileImgUrl || `https://eu.ui-avatars.com/api/?name=${userInfo?.firstName}+${userInfo?.lastName}&size=250`}
                             className="rounded-circle"
                         />
                     </div>
@@ -280,7 +280,7 @@ export default function AccountDetail() {
                         </button>
                     )}
                     {isFriend && id !== loggedInAccountId && (
-                        <button className="btn btn-secondary" onClick={handleUnfriend}>
+                        <button className="btn btn-secondary me-4" onClick={handleUnfriend}>
                             Vriend Verwijderen
                         </button>
                     )}

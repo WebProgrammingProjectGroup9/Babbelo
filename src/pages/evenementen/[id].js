@@ -212,7 +212,7 @@ export default function Detail() {
           >
             <div className="d-flex align-items-center p-1 mb-4">
               <img
-                src={event.organisator.profileImgUrl}
+                src={event.organisator.profileImgUrl || `https://eu.ui-avatars.com/api/?name=${event.organisator?.firstName}+${event.organisator?.lastName}&size=250`}
                 alt={`${event.organisator.firstName} ${event.organisator.lastName} profile image`}
                 className="img-fluid rounded-circle me-3 profile-img"
               />
@@ -329,7 +329,7 @@ export default function Detail() {
                       >
                         <div className="d-flex flex-row align-items-center p-3 h-100">
                           <img
-                            src={participant.profileImgUrl}
+                            src={participant.profileImgUrl || `https://eu.ui-avatars.com/api/?name=${participant?.firstName}+${participant?.lastName}&size=250`}
                             alt={`${participant.firstName} ${participant.lastName} profile image`}
                             className="img-fluid rounded-circle me-3 profile-img"
                           />

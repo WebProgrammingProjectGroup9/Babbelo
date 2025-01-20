@@ -105,7 +105,7 @@ export default function Profile() {
         <div className="text-center">
           <div className="profile-picture">
             <img
-              src={userData?.profileImgUrl}
+              src={userData?.profileImgUrl || `https://eu.ui-avatars.com/api/?name=${userData.firstName}+${userData.lastName}&size=250`}
               className="rounded-circle"
             />
           </div>
@@ -169,7 +169,7 @@ export default function Profile() {
         <div className="text-center">
           <div className="profile-picture">
             <img
-              src={userData?.profileImgUrl}
+              src={userData?.profileImgUrl || `https://eu.ui-avatars.com/api/?name=${userData.firstName}+${userData.lastName}&size=250`}
               className="rounded-circle"
             />
           </div>

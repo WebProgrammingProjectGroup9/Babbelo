@@ -289,10 +289,10 @@ export default function Vrienden() {
                                             className="detail-link"
                                         >
                                             <li key={index} className="my-4 border-bottom pb-3 d-flex align-items-center">
-                                                <img src={friend.profileImgUrl || 'https://via.placeholder.com/50'} 
+                                                <img src={friend.profileImgUrl || `https://eu.ui-avatars.com/api/?name=${friend.firstName}+${friend.lastName}&size=250`} 
                                                     alt={`${friend.firstName} ${friend.lastName}`} 
                                                     className="rounded-circle me-3" width="50" height="50" />
-                                                <span>{friend.firstName} {friend.lastName}</span>
+                                                <span className="p-4 mb-2">{friend.firstName} {friend.lastName}</span>
                                             </li>
                                         </Link>
                                     ))
@@ -305,73 +305,87 @@ export default function Vrienden() {
                 </div>
 
                 <div className="col-md-12 col-lg-6 d-flex justify-content-center mb-3 mb-lg-0">
-                    <div className="profile-box border shadow-lg rounded-5 p-5 w-100">
-                        <h3 className="text-center">Verzoeken</h3>
-                        {loading ? (
-                            <p>Gegevens laden...</p>
-                        ) : requestError ? (
-                            <p className="text-danger">{requestError}</p>
-                        ) : (
-                            <ul className="list-unstyled">
-                                {requests.length > 0 ? (
-                                    requests.map((request, index) => (
-                                        
-                                            <li key={index} className="my-4 border-bottom pb-3 d-flex align-items-center">
-                                                <Link
-                                                    href={`/account/${request._id}`}
-                                                    key={request.id}
-                                                    className="detail-link"
-                                                >
-                                                    <img src={request.profileImgUrl || 'https://via.placeholder.com/50'} 
-                                                        alt={`${request.firstName} ${request.lastName}`} 
-                                                        className="rounded-circle me-3" width="50" height="50" />
-                                                </Link>
-                                                <span>
-                                                    <button
-                                                        className="btn btn-primary mb-1"
-                                                        style={{
-                                                            color: "white",
-                                                            fontSize: "14px",
-                                                            padding: "5px 15px",
-                                                            borderRadius: "5px",
-                                                            marginLeft: "10px",
-                                                            width: "100px", 
-                                                            height: "35px", 
-                                                        }}
-                                                        onClick={() => {
-                                                            console.log("Accept button clicked for request:", request._id);
-                                                            handleRequestApprove(request._id);
-                                                        }}
-                                                    >
-                                                        Accepteren
-                                                    </button>
-                                                    <button
-                                                        className="btn btn-primary"
-                                                        style={{
-                                                            color: "white",
-                                                            fontSize: "14px",
-                                                            padding: "5px 15px",
-                                                            borderRadius: "5px",
-                                                            marginLeft: "10px",
-                                                            width: "100px", 
-                                                            height: "35px", 
-                                                        }}
-                                                        onClick={() => {
-                                                            console.log("Reject button clicked for request:", request._id);
-                                                            handleRequestReject(request._id);
-                                                        }}
-                                                    >
-                                                        Afwijzen
-                                                    </button>
-                                                </span>
-                                            </li>
-                                    ))
-                                ) : (
-                                    <p>Je hebt geen nieuwe verzoeken.</p>
-                                )}
-                            </ul>
-                        )}
-                    </div>
+                <div className="profile-box border shadow-lg rounded-5 p-5 w-100">
+                    <h3 className="text-center">Verzoeken</h3>
+                    {loading ? (
+                        <p>Gegevens laden...</p>
+                    ) : requestError ? (
+                        <p className="text-danger">{requestError}</p>
+                    ) : (
+                        <ul className="list-unstyled">
+                            {requests.length > 0 ? (
+                                requests.map((request, index) => (
+                                    <li
+                                        key={index}
+                                        className="my-4 border-bottom pb-3 d-flex align-items-center flex-wrap"
+                                    >
+                                        <div className="mx-3 gap-3">
+                                            <Link
+                                                href={`/account/${request._id}`}
+                                                className="detail-link"
+                                            >
+                                                <img
+                                                    src={request.profileImgUrl || `https://eu.ui-avatars.com/api/?name=${request.firstName}+${request.lastName}&size=250`}
+                                                    alt={`${request.firstName} ${request.lastName}`}
+                                                    className="rounded-circle"
+                                                    width="50"
+                                                    height="50"
+                                                />
+                                            </Link>
+                                        </div>
+                                        <span className="p-4 d-flex gap-3 flex-wrap">
+                                            <button
+                                                className="btn btn-primary mt-1"
+                                                style={{
+                                                    color: "white",
+                                                    fontSize: "14px",
+                                                    padding: "5px 15px",
+                                                    borderRadius: "5px",
+                                                    width: "100px",
+                                                    height: "35px",
+                                                }}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    console.log(
+                                                        "Accept button clicked for request:",
+                                                        request._id
+                                                    );
+                                                    handleRequestApprove(request._id);
+                                                }}
+                                            >
+                                                Accepteren
+                                            </button>
+                                            <button
+                                                className="btn btn-primary mt-1"
+                                                style={{
+                                                    color: "white",
+                                                    fontSize: "14px",
+                                                    padding: "5px 15px",
+                                                    borderRadius: "5px",
+                                                    width: "100px",
+                                                    height: "35px",
+                                                }}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    console.log(
+                                                        "Reject button clicked for request:",
+                                                        request._id
+                                                    );
+                                                    handleRequestReject(request._id);
+                                                }}
+                                            >
+                                                Afwijzen
+                                            </button>
+                                        </span>
+                                    </li>
+                                ))
+                            ) : (
+                                <p>Je hebt geen nieuwe verzoeken.</p>
+                            )}
+                        </ul>
+                    )}
+                </div>
+
                 </div>
             </div>
         </div>

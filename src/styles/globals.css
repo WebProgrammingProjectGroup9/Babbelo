@@ -33,16 +33,6 @@ h2 {
   display: inline;
 }
 
-@media (max-width: 1024px) {
-  .sidebar-layout {
-    width: 250px; /* Keep sidebar visible */
-  }
-
-  .sidebar-layout .nav-link span {
-    display: none; /* Hide text on smaller screens */
-  }
-}
-
 .sidebar-layout h1 {
   font-size: 60px;
 }
@@ -76,58 +66,45 @@ h2 {
     margin-bottom: 50px;
   }
 }
-
 @media (max-width: 1024px) {
-  .sidebar-layout .nav-link {
-    font-size: 27px; 
+  .sidebar-layout {
+    width: 250px; /* Fixed width for tablets and small screens */
   }
 
-  .sidebar-layout h1 {
-    font-size: 50px;
+  body {
+    margin-left: 250px; /* Matches the smaller sidebar width */
   }
 
-  .sidebar-layout .btn {
-    margin-bottom: 25px; 
-  }
-
-  .sidebar-layout .profile-link {
-    margin-bottom: 50px;
+  main.col-xxl-9.col-xl-8.align-self-end {
+    width: calc(100% - 250px); /* Adjust content width dynamically */
   }
 }
 
 @media (max-width: 768px) {
-  .sidebar-layout .nav-link {
-    font-size: 20px; 
+  .sidebar-layout {
+    width: 200px; /* Smaller width for small devices */
   }
 
-  .sidebar-layout h1 {
-    font-size: 40px; 
+  body {
+    margin-left: 200px; /* Adjusted for smaller sidebar width */
   }
 
-  .sidebar-layout .btn {
-    margin-bottom: 20px; 
-  }
-
-  .sidebar-layout .profile-link {
-    margin-bottom: 50px;
+  main.col-xxl-9.col-xl-8.align-self-end {
+    width: calc(100% - 200px); /* Adjust content width */
   }
 }
 
 @media (max-width: 576px) {
-  .sidebar-layout .nav-link {
-    font-size: 18px; 
+  .sidebar-layout {
+    width: 180px; /* Further reduced for very small screens */
   }
 
-  .sidebar-layout h1 {
-    font-size: 35px; 
+  body {
+    margin-left: 180px; /* Matches sidebar */
   }
 
-  .sidebar-layout .btn {
-    margin-bottom: 10px; 
-  }
-
-  .sidebar-layout .profile-link {
-    margin-bottom: 50px;
+  main.col-xxl-9.col-xl-8.align-self-end {
+    width: calc(100% - 180px);
   }
 }
 

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 export default function Vrienden() {
     const [friends, setFriends] = useState([]);
@@ -139,7 +140,7 @@ export default function Vrienden() {
             
             await fetchFriends();
             console.log("Waiting before fetching friend requests...");
-            await new Promise((resolve) => setTimeout(resolve, 1000));
+            await new Promise((resolve) => setTimeout(resolve, 400));
             await fetchRequests();
 
             setLoading(false);
@@ -150,8 +151,8 @@ export default function Vrienden() {
         }
     }, [id]);
 
-    const handleRequest = async (id) => {
-        console.log("handleRequest called with id:", id);
+    const handleRequestApprove = async (id) => {
+        console.log("handleRequestApprove called with id:", id);
     
         const id1 = parseInt(localStorage.getItem("account_id"), 10);
         const id2 = parseInt(id, 10);
@@ -210,14 +211,70 @@ export default function Vrienden() {
             console.error("Error accepting friend request:", error);
         }
     };
+
+    const handleRequestReject = async (id) => {
+        console.log("handleRequestReject called with id:", id);
     
+        const id1 = parseInt(localStorage.getItem("account_id"), 10);
+        const id2 = parseInt(id, 10); 
+    
+        console.log("Parsed id1 from localStorage:", id1);
+        console.log("Parsed id2 from argument:", id2);
+    
+        if (!id1) {
+            console.error("No account_id found in localStorage");
+            return;
+        }
+    
+        const token = localStorage.getItem("token");
+        if (!token) {
+            console.error("No token found in localStorage");
+            return;
+        }
+    
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+        if (!apiUrl) {
+            console.error("API URL is missing in environment variables");
+            return;
+        }
+    
+        try {
+            console.log("Sending deny request to:", `${apiUrl}/neo4j/deny`);
+    
+            const response = await fetch(`${apiUrl}/neo4j/deny`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    id1: id2, 
+                    id2: id1,
+                }),
+            });
+    
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error(`Failed to deny friend request (Status: ${response.status}):`, errorText);
+                return;
+            }
+    
+            console.log("Friend request denied successfully");
+    
+            setRequests((prevRequests) =>
+                prevRequests.filter((request) => request._id !== id)
+            );
+        } catch (error) {
+            console.error("Error denying friend request:", error);
+        }
+    };
     
     return (
         <div className="container-fluid d-flex justify-content-center align-items-center vh-100">
             <div className="row w-75 d-flex justify-content-center">
                 <div className="col-md-12 col-lg-6 d-flex justify-content-center mb-3 mb-lg-0">
                     <div className="profile-box border shadow-lg rounded-5 p-5 w-100">
-                        <h3 className="text-center">Jouw Vrienden</h3>
+                        <h3 className="text-center">Vrienden</h3>
                         {loading ? (
                             <p>Gegevens laden...</p>
                         ) : friendError ? (
@@ -226,12 +283,18 @@ export default function Vrienden() {
                             <ul className="list-unstyled">
                                 {friends.length > 0 ? (
                                     friends.map((friend, index) => (
-                                        <li key={index} className="my-4 border-bottom pb-3 d-flex align-items-center">
-                                            <img src={friend.profileImgUrl || 'https://via.placeholder.com/50'} 
-                                                alt={`${friend.firstName} ${friend.lastName}`} 
-                                                className="rounded-circle me-3" width="50" height="50" />
-                                            <span>{friend.firstName} {friend.lastName}</span>
-                                        </li>
+                                        <Link
+                                            href={`/account/${friend._id}`}
+                                            key={friend.id}
+                                            className="detail-link"
+                                        >
+                                            <li key={index} className="my-4 border-bottom pb-3 d-flex align-items-center">
+                                                <img src={friend.profileImgUrl || `https://eu.ui-avatars.com/api/?name=${friend.firstName}+${friend.lastName}&size=250`} 
+                                                    alt={`${friend.firstName} ${friend.lastName}`} 
+                                                    className="rounded-circle me-3" width="50" height="50" />
+                                                <span className="p-4 mb-2">{friend.firstName} {friend.lastName}</span>
+                                            </li>
+                                        </Link>
                                     ))
                                 ) : (
                                     <p>Je hebt nog geen vrienden toegevoegd.</p>
@@ -241,30 +304,88 @@ export default function Vrienden() {
                     </div>
                 </div>
 
-                <div className="col-md-12 col-lg-6 d-flex justify-content-center">
-                    <div className="profile-box border shadow-lg rounded-5 p-5 w-100">
-                        <h3 className="text-center">Vriendschapsverzoeken</h3>
-                        {loading ? (
-                            <p>Gegevens laden...</p>
-                        ) : requestError ? (
-                            <p className="text-danger">{requestError}</p>
-                        ) : (
-                            <ul className="list-unstyled">
-                                {requests.length > 0 ? (
-                                    requests.map((request, index) => (
-                                        <li key={index} className="my-4 border-bottom pb-3 d-flex align-items-center">
-                                            <img src={request.profileImgUrl || 'https://via.placeholder.com/50'} 
-                                                alt={`${request.firstName} ${request.lastName}`} 
-                                                className="rounded-circle me-3" width="50" height="50" />
-                                            <span>{request.firstName} {request.lastName} <button className="btn btn-primary ms-5" onClick={() => {console.log("Accept button clicked for request:", request._id); handleRequest(request._id)}}>Accepteren</button></span>
-                                        </li>
-                                    ))
-                                ) : (
-                                    <p>Je hebt geen nieuwe vriendschapsverzoeken.</p>
-                                )}
-                            </ul>
-                        )}
-                    </div>
+                <div className="col-md-12 col-lg-6 d-flex justify-content-center mb-3 mb-lg-0">
+                <div className="profile-box border shadow-lg rounded-5 p-5 w-100">
+                    <h3 className="text-center">Verzoeken</h3>
+                    {loading ? (
+                        <p>Gegevens laden...</p>
+                    ) : requestError ? (
+                        <p className="text-danger">{requestError}</p>
+                    ) : (
+                        <ul className="list-unstyled">
+                            {requests.length > 0 ? (
+                                requests.map((request, index) => (
+                                    <li
+                                        key={index}
+                                        className="my-4 border-bottom pb-3 d-flex align-items-center flex-wrap"
+                                    >
+                                        <div className="mx-3 gap-3">
+                                            <Link
+                                                href={`/account/${request._id}`}
+                                                className="detail-link"
+                                            >
+                                                <img
+                                                    src={request.profileImgUrl || `https://eu.ui-avatars.com/api/?name=${request.firstName}+${request.lastName}&size=250`}
+                                                    alt={`${request.firstName} ${request.lastName}`}
+                                                    className="rounded-circle"
+                                                    width="50"
+                                                    height="50"
+                                                />
+                                            </Link>
+                                        </div>
+                                        <span className="p-4 d-flex gap-3 flex-wrap">
+                                            <button
+                                                className="btn btn-primary mt-1"
+                                                style={{
+                                                    color: "white",
+                                                    fontSize: "14px",
+                                                    padding: "5px 15px",
+                                                    borderRadius: "5px",
+                                                    width: "100px",
+                                                    height: "35px",
+                                                }}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    console.log(
+                                                        "Accept button clicked for request:",
+                                                        request._id
+                                                    );
+                                                    handleRequestApprove(request._id);
+                                                }}
+                                            >
+                                                Accepteren
+                                            </button>
+                                            <button
+                                                className="btn btn-primary mt-1"
+                                                style={{
+                                                    color: "white",
+                                                    fontSize: "14px",
+                                                    padding: "5px 15px",
+                                                    borderRadius: "5px",
+                                                    width: "100px",
+                                                    height: "35px",
+                                                }}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    console.log(
+                                                        "Reject button clicked for request:",
+                                                        request._id
+                                                    );
+                                                    handleRequestReject(request._id);
+                                                }}
+                                            >
+                                                Afwijzen
+                                            </button>
+                                        </span>
+                                    </li>
+                                ))
+                            ) : (
+                                <p>Je hebt geen nieuwe verzoeken.</p>
+                            )}
+                        </ul>
+                    )}
+                </div>
+
                 </div>
             </div>
         </div>

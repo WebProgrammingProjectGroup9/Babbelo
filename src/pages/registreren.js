@@ -50,10 +50,7 @@ export default function Registreren() {
 
 	const handleRegister = async (e) => {
 		e.preventDefault();
-		console.log("voor await");
 		try {
-			const profileImgUrl = await handleSave();
-			console.log("na await");
 			setError("");
 			setSuccess("");
 
@@ -185,55 +182,47 @@ export default function Registreren() {
 	};
 
 	const handleSave = () => {
-		return new Promise((resolve, reject) => {
-			try {
-				drawCanvas();
-				const canvas = previewCanvasRef.current;
-				if (!canvas) return;
+		drawCanvas();
+		const canvas = previewCanvasRef.current;
+		if (!canvas) return;
 
-				canvas.toBlob((blob) => {
-					if (!blob) {
-						console.error("Failed to create Blob from canvas");
-						return;
-					}
-					const reader = new FileReader();
-					reader.onloadend = () => {
-						const base64data = reader.result;
-
-						const img = new Image();
-						img.src = base64data;
-						img.onload = () => {
-							const canvas = document.createElement("canvas");
-							const ctx = canvas.getContext("2d");
-
-							const maxWidth = 400;
-							const maxHeight = 400;
-							const ratio = Math.min(maxWidth / img.width, maxHeight / img.height);
-							const width = img.width * ratio;
-							const height = img.height * ratio;
-
-							canvas.width = width;
-							canvas.height = height;
-							ctx.drawImage(img, 0, 0, width, height);
-
-							const compressedBase64 = canvas.toDataURL("image/jpeg", 0.6);
-							console.log(compressedBase64);
-							console.log(typeof compressedBase64 === "string" && compressedBase64.startsWith("data:image/jpeg;base64,"));
-							if (typeof compressedBase64 === "string" && compressedBase64.startsWith("data:image/jpeg;base64,")) {
-								setCropping(false);
-								console.log("klaar");
-								resolve(compressedBase64);
-							} else {
-								console.error("Invalid Base64 image data");
-							}
-						};
-					};
-					reader.readAsDataURL(blob);
-				}, "image/jpeg");
-			} catch (error) {
-				reject(error);
+		canvas.toBlob((blob) => {
+			if (!blob) {
+				console.error("Failed to create Blob from canvas");
+				return;
 			}
-		});
+			const reader = new FileReader();
+			reader.onloadend = () => {
+				const base64data = reader.result;
+
+				const img = new Image();
+				img.src = base64data;
+				img.onload = () => {
+					const canvas = document.createElement("canvas");
+					const ctx = canvas.getContext("2d");
+
+					const maxWidth = 400;
+					const maxHeight = 400;
+					const ratio = Math.min(maxWidth / img.width, maxHeight / img.height);
+					const width = img.width * ratio;
+					const height = img.height * ratio;
+
+					canvas.width = width;
+					canvas.height = height;
+					ctx.drawImage(img, 0, 0, width, height);
+
+					const compressedBase64 = canvas.toDataURL("image/jpeg", 0.6);
+					if (typeof compressedBase64 === "string" && compressedBase64.startsWith("data:image/jpeg;base64,")) {
+						setProfileImgUrl(compressedBase64);
+						setCropping(false);
+						
+					} else {
+						console.error("Invalid Base64 image data");
+					}
+				};
+			};
+			reader.readAsDataURL(blob);
+		}, "image/jpeg");
 	};
 
 	const handleZoomChange = (event) => {
@@ -537,6 +526,9 @@ export default function Registreren() {
 				</div>
 				<div className="form-group mb-4">
 					<input type="file" accept="image/*" onChange={handleImageUpload} className="form-control" />
+					<button type="button" onClick={handleSave} className="btn btn-primary col-3">
+						Foto Opslaan
+					</button>
 				</div>
 
 				{selectedImage && cropping && (

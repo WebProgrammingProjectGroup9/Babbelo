@@ -1,20 +1,16 @@
 import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { forceCollide } from "d3-force-3d";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const ForceGraph2D = dynamic(() => import("react-force-graph").then((mod) => mod.ForceGraph2D), { ssr: false });
 
 const IMAGE_SIZE = 10;
 const BORDER_SIZE = 1;
-const FORCE_LINK_DISTANCE = IMAGE_SIZE * 6;
-const FORCE_COLLIDE_RADIUS = IMAGE_SIZE * 2; 
-
 const GROUP_COLORS = {
-  1: "blue", 
-  2: "yellow", 
-  3: "orange", 
+  1: "blue",
+  2: "yellow",
+  3: "orange",
   4: "red",
 };
 
@@ -57,6 +53,19 @@ export default function Vriendenweb() {
         const nodes = new Map();
         const links = [];
 
+        const addNode = (id, data, group) => {
+          if (!nodes.has(id)) {
+            nodes.set(id, { ...data, group });
+          }
+        };
+
+        const addLink = (source, target) => {
+          if (!links.some((link) => link.source === source && link.target === target)) {
+            links.push({ source, target });
+          }
+        };
+
+        // Fetch the logged-in user's data
         const userResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/account/${accountId}`, {
           headers: {
             "Content-Type": "application/json",
@@ -69,14 +78,14 @@ export default function Vriendenweb() {
         }
 
         const loggedInUser = await userResponse.json();
-        nodes.set(accountId, {
+        addNode(accountId, {
           id: accountId,
           firstName: loggedInUser.firstName,
           lastName: loggedInUser.lastName,
           img: loggedInUser.profileImgUrl || `https://eu.ui-avatars.com/api/?name=${loggedInUser.firstName}+${loggedInUser.lastName}&size=250`,
-          group: 1,
-        });
+        }, 1);
 
+        // Fetch friends of the logged-in user
         const friendsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/neo4j/friend/${accountId}`, {
           headers: {
             "Content-Type": "application/json",
@@ -89,7 +98,6 @@ export default function Vriendenweb() {
         }
 
         const friendIds = await friendsResponse.json();
-
         for (const friendId of friendIds) {
           const friendResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/account/${friendId}`, {
             headers: {
@@ -101,16 +109,17 @@ export default function Vriendenweb() {
           if (!friendResponse.ok) continue;
 
           const friendData = await friendResponse.json();
-          nodes.set(friendId, 
-            { id: friendId,
-              firstName: friendData.firstName,
-              lastName: friendData.lastName,
-              img: friendData.profileImgUrl || `https://eu.ui-avatars.com/api/?name=${friendData.firstName}+${friendData.lastName}&size=250`,
-              group: 2,
-            });
-          links.push({ source: accountId, target: friendId });
+          addNode(friendId, {
+            id: friendId,
+            firstName: friendData.firstName,
+            lastName: friendData.lastName,
+            img: friendData.profileImgUrl || `https://eu.ui-avatars.com/api/?name=${friendData.firstName}+${friendData.lastName}&size=250`,
+          }, 2);
+
+          addLink(accountId, friendId);
         }
 
+        // Fetch friends of friends
         const fofResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/neo4j/friendsOfFriends/${accountId}`, {
           headers: {
             "Content-Type": "application/json",
@@ -123,8 +132,9 @@ export default function Vriendenweb() {
         }
 
         const fofIds = await fofResponse.json();
-
         for (const fofId of fofIds) {
+          if (nodes.has(fofId)) continue; // Skip duplicates
+
           const fofResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/account/${fofId}`, {
             headers: {
               "Content-Type": "application/json",
@@ -135,47 +145,14 @@ export default function Vriendenweb() {
           if (!fofResponse.ok) continue;
 
           const fofData = await fofResponse.json();
-          nodes.set(fofId, 
-            { id: fofId,
-              firstName: fofData.firstName,
-              lastName: fofData.lastName,
-              img: fofData.profileImgUrl || `https://eu.ui-avatars.com/api/?name=${fofData.firstName}+${fofData.lastName}&size=250`,
-              group: 3,
-            });
+          addNode(fofId, {
+            id: fofId,
+            firstName: fofData.firstName,
+            lastName: fofData.lastName,
+            img: fofData.profileImgUrl || `https://eu.ui-avatars.com/api/?name=${fofData.firstName}+${fofData.lastName}&size=250`,
+          }, 3);
 
-          const fofFriendsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/neo4j/friend/${fofId}`, {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          });
-
-          if (!fofFriendsResponse.ok) continue;
-
-          const fofFriendIds = await fofFriendsResponse.json();
-
-          for (const fofFriendId of fofFriendIds) {
-            if (!nodes.has(fofFriendId)) {
-              const fofFriendResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/account/${fofFriendId}`, {
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
-                },
-              });
-
-              if (!fofFriendResponse.ok) continue;
-
-              const fofFriendData = await fofFriendResponse.json();
-              nodes.set(fofFriendId, 
-                { id: fofFriendId,
-                  firstName: fofFriendData.firstName,
-                  lastName: fofFriendData.lastName,
-                  img: fofFriendData.profileImgUrl || `https://eu.ui-avatars.com/api/?name=${fofFriendData.firstName}+${fofFriendData.lastName}&size=250`,
-                  group: 4,
-                });
-            }
-            links.push({ source: fofId, target: fofFriendId });
-          }
+          addLink(friendIds.find((friend) => friend === fofId), fofId); // Link only if valid
         }
 
         const nodeArray = Array.from(nodes.values());

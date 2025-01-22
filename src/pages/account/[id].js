@@ -12,9 +12,8 @@ export default function AccountDetail() {
     const { id } = router.query;
     const { isLoggedIn } = useContext(AuthContext);
 
-    const loggedInAccountId = localStorage.getItem("account_id");
-
     useEffect(() => {
+        
         if (!localStorage.getItem("token")) {
             console.log("No token found, redirecting to login.");
             router.push("/inloggen");

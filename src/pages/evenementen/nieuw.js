@@ -66,17 +66,6 @@ export default function Nieuw() {
 		setIsLoading(true);
 		setErrors(null);
 
-		console.log("Verstuurde gegevens:", {
-			title,
-			date,
-			startTime,
-			endTime,
-			description,
-			information,
-			category,
-			photo,
-		});
-
 		try {
 			const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/event`, {
 				method: "POST",

@@ -50,6 +50,7 @@ export default function Detail() {
           (p) => String(p.id) === String(currentUser)
         );
         setJoined(userJoined);
+
       } catch (error) {
         console.error("Error fetching event data:", error);
       }
@@ -107,7 +108,6 @@ export default function Detail() {
   return (
     <div className="container mt-5">
       <div className="row align-items-stretch g-4">
-  {/* Image */}
   <div className="col-lg-6 col-md-12">
     <div className="card h-100 shadow-lg">
       <img
@@ -118,7 +118,6 @@ export default function Detail() {
     </div>
   </div>
 
-  {/* Details */}
   <div className="col-lg-6 col-md-12">
     <div className="card h-100 bg-light shadow-lg p-3 detail-card">
       <h1 className="display-5 text-center border-bottom pb-2">
@@ -196,9 +195,8 @@ export default function Detail() {
 </div>
 
 
-{/* Organisator and Location Details Side-by-Side */}
+
 <div className="row mt-5 mb-5">
-  {/* Organisator */}
   {event.organisator && (
     <div className="col-6">
       <div className="card shadow-lg h-100">
@@ -238,7 +236,6 @@ export default function Detail() {
     </div>
   )}
 
-  {/* Location Details */}
   {event.address && (
     <div className="col-6">
       <div className="card shadow-lg h-100">
@@ -279,7 +276,7 @@ export default function Detail() {
 </div>
 
 
-      {/* Description */}
+
       <div className="row mt-5">
         <div className="col-6">
           <div className="card shadow-lg">
@@ -293,7 +290,6 @@ export default function Detail() {
         </div>
       </div>
 
-      {/* Information */}
       <div className="row mt-5 mb-5">
         <div className="col-12">
           <div className="card shadow-lg">
@@ -307,7 +303,7 @@ export default function Detail() {
         </div>
       </div>
 
-      {/* Participants */}
+
       {event.participants && event.participants.length > 0 && (
         <div className="row mt-5 mb-5">
           <div className="col-12">

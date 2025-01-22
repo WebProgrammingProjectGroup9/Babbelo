@@ -60,9 +60,7 @@ export default function Vriendenweb() {
         };
 
         const addLink = (source, target) => {
-          if (!links.some((link) => link.source === source && link.target === target)) {
-            links.push({ source, target });
-          }
+          links.push({ source, target });
         };
 
         // Fetch the logged-in user's data
@@ -152,7 +150,7 @@ export default function Vriendenweb() {
             img: fofData.profileImgUrl || `https://eu.ui-avatars.com/api/?name=${fofData.firstName}+${fofData.lastName}&size=250`,
           }, 3);
 
-          addLink(friendIds.find((friend) => friend === fofId), fofId); // Link only if valid
+          addLink(friendIds, fofId);
         }
 
         const nodeArray = Array.from(nodes.values());
@@ -186,8 +184,8 @@ export default function Vriendenweb() {
       minZoom={5}
       nodeCanvasObject={(node, ctx) => {
         const img = imageMap.get(node.id);
-
         const groupColor = GROUP_COLORS[node.group] || "gray";
+
         ctx.save();
         ctx.beginPath();
         ctx.arc(node.x, node.y, (IMAGE_SIZE + BORDER_SIZE) / 2, 0, 2 * Math.PI);
@@ -204,11 +202,10 @@ export default function Vriendenweb() {
           ctx.restore();
         }
 
-        const label = `${node.firstName}`;
         ctx.font = "5px Sans-Serif";
         ctx.fillStyle = "black";
         ctx.textAlign = "center";
-        ctx.fillText(label, node.x, node.y + IMAGE_SIZE / 2 + 5);
+        ctx.fillText(node.firstName, node.x, node.y + IMAGE_SIZE / 2 + 5);
       }}
       onNodeClick={(node) => {
         router.push(`/account/${node.id}`);

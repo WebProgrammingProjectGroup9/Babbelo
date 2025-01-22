@@ -55,21 +55,15 @@ export default function Sidebar() {
             </Link>
           </li>
           <li className="nav-item">
-            <Link href="/kaart" className="nav-link pb-5">
-              <i className="bi bi-map pe-2"></i>
-              <span className="d-none d-lg-inline">Kaart</span>
-            </Link>
-          </li>
-          <li className="nav-item">
             <Link href="/tijdlijn" className="nav-link pb-5">
               <i className="bi bi-calendar-heart pe-2"></i>
               <span className="d-none d-lg-inline">Tijdlijn</span>
             </Link>
           </li>
           <li className="nav-item">
-            <Link href="/chats" className="nav-link pb-5">
-              <i className="bi bi-chat pe-2"></i>
-              <span className="d-none d-lg-inline">Chats</span>
+            <Link href="/vriendenweb" className="nav-link pb-5">
+              <i className="bi bi-people pe-2"></i>
+              <span className="d-none d-lg-inline">Vrienden web</span>
             </Link>
           </li>
         </ul>

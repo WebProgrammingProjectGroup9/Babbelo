@@ -496,3 +496,8 @@ h2 {
 .fab i {
   font-size: 60px;
 }
+
+.graph-wrapper {
+  flex: 1;
+  position: fixed;
+}

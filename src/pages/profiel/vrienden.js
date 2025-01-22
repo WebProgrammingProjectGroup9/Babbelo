@@ -292,7 +292,7 @@ export default function Vrienden() {
                                                 <img src={friend.profileImgUrl || `https://eu.ui-avatars.com/api/?name=${friend.firstName}+${friend.lastName}&size=250`} 
                                                     alt={`${friend.firstName} ${friend.lastName}`} 
                                                     className="rounded-circle me-3" width="50" height="50" />
-                                                <span className="p-4 mb-2">{friend.firstName} {friend.lastName}</span>
+                                                <span className="p-4 mb-2 d-none d-lg-none d-lg-inline d-xl-inline">{friend.firstName} {friend.lastName}</span>
                                             </li>
                                         </Link>
                                     ))

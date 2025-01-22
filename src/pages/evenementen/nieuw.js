@@ -15,6 +15,10 @@ export default function Nieuw() {
 	const [endTime, setEndTime] = useState("");
 	const [description, setDescription] = useState("");
 	const [information, setInformation] = useState("");
+	const [zipCode, setZipCode] = useState("");
+	const [streetName, setStreetName] = useState("");
+	const [houseNumber, setHouseNumber] = useState("");
+	const [city, setCity] = useState("")
 	const [category, setCategory] = useState("");
 	const [photo, setPhoto] = useState("");
 	const [errors, setErrors] = useState(null);
@@ -39,12 +43,11 @@ export default function Nieuw() {
 	const maxLength = 75;
 
 	useEffect(() => {
-		//Date
 		const now = new Date();
 		const formattedDate = now.toISOString().split("T")[0];
 		setDate(formattedDate);
 
-		//Time
+		
 		const formattedTime = now.toTimeString().slice(0, 5);
 		setStartTime(formattedTime);
 		setEndTime(formattedTime);
@@ -81,7 +84,7 @@ export default function Nieuw() {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${localStorage.getItem("token")}`,
 				},
-				body: JSON.stringify({ title, date, startTime, endTime, description, information, category, photo }),
+				body: JSON.stringify({ title, date, startTime, endTime, description, information, category, photo, streetName, houseNumber, zipCode, city }),
 			});
 
 			if (!response.ok) {
@@ -233,6 +236,31 @@ export default function Nieuw() {
 					<div className="col-sm-12 col-lg-6 col-md-6">
 						<label className="form-label">Eindtijd:</label>
 						<input type="time" className="form-control" value={endTime} onChange={(e) => setEndTime(e.target.value)} required />
+					</div>
+				</div>
+
+				<div className="row mt-4">
+					<div className="col-12">
+						<label className="form-label">Straatnaam:</label>
+						<input type="text" className="form-control" placeholder="Straatnaam" value={streetName} onChange={(e) => setStreetName(e.target.value)} required />
+					</div>
+				</div>
+
+				<div className="row mt-4">
+					<div className="col-6">
+						<label className="form-label">Huisnummer:</label>
+						<input type="text" className="form-control" placeholder="Huisnummer" value={houseNumber} onChange={(e) => setHouseNumber(e.target.value)} required />
+					</div>
+					<div className="col-6">
+						<label className="form-label">Postcode:</label>
+						<input type="text" className="form-control" placeholder="Postcode" value={zipCode} onChange={(e) => setZipCode(e.target.value)} required />
+					</div>
+				</div>
+
+				<div className="row mt-4">
+					<div className="col-12">
+						<label className="form-label">Stad:</label>
+						<input type="text" className="form-control" placeholder="Stad" value={city} onChange={(e) => setCity(e.target.value)} required />
 					</div>
 				</div>
 

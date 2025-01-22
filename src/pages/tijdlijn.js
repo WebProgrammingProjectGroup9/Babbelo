@@ -164,7 +164,9 @@ export default function Tijdlijn() {
                                         <div className="participants-bubbles">
                                             {event.participants.slice(0, 3).map((participant, idx) => (
                                                 <div key={idx} className="participant-bubble">
-                                                    <img src={participant.profileImgUrl} alt={`Participant ${idx}`} className="participant-image" />
+                                                    <Link href={`/account/${participant._id}`}>
+                                                        <img src={participant.profileImgUrl || `https://eu.ui-avatars.com/api/?name=${participant.firstName}+${participant.lastName}&size=250`} alt={`Participant ${idx}`} className="participant-image" />                                                
+                                                    </Link>
                                                 </div>
                                             ))}
                                         </div>

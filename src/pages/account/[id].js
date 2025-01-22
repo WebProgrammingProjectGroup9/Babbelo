@@ -11,6 +11,7 @@ export default function AccountDetail() {
     const router = useRouter();
     const { id } = router.query;
     const { isLoggedIn } = useContext(AuthContext);
+    const [accountId, setAccountId] = useState();
 
     useEffect(() => {
         
@@ -22,8 +23,9 @@ export default function AccountDetail() {
 
     useEffect(() => {
         const account_id = localStorage.getItem("account_id");
+        setAccountId(account_id)
 
-        if (account_id === id) {
+        if (accountId === id) {
             console.log("Logged-in user is visiting their own profile, redirecting to /profiel.");
             router.push("/profiel");
             return;
@@ -56,8 +58,8 @@ export default function AccountDetail() {
 
         const fetchFriends = async () => {
             try {
-                console.log("Fetching friends for logged-in account ID:", loggedInAccountId);
-                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/neo4j/friend/${loggedInAccountId}`, {
+                console.log("Fetching friends for logged-in account ID:", accountId);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/neo4j/friend/${accountId}`, {
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -87,7 +89,7 @@ export default function AccountDetail() {
         const visitingAccountId = parseInt(id, 10);
 
         try {
-            console.log("Sending friend request from", loggedInAccountId, "to", visitingAccountId);
+            console.log("Sending friend request from", accountId, "to", visitingAccountId);
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/neo4j/request`, {
                 method: "POST",
                 headers: {
@@ -95,7 +97,7 @@ export default function AccountDetail() {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
                 body: JSON.stringify({
-                    id1: parseInt(loggedInAccountId, 10),
+                    id1: parseInt(accountId, 10),
                     id2: visitingAccountId,
                 }),
             });
@@ -108,7 +110,7 @@ export default function AccountDetail() {
 
             console.log("Friend request sent successfully:", responseData);
 
-            setFriendRequests((prevRequests) => [...prevRequests, parseInt(loggedInAccountId, 10)]);
+            setFriendRequests((prevRequests) => [...prevRequests, parseInt(accountId, 10)]);
         } catch (error) {
             console.error("Error adding friend:", error);
         }
@@ -118,7 +120,7 @@ export default function AccountDetail() {
         const visitingAccountId = parseInt(id, 10);
 
         try {
-            console.log("Sending unfriend request from", loggedInAccountId, "to", visitingAccountId);
+            console.log("Sending unfriend request from", accountId, "to", visitingAccountId);
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/neo4j/unfriend`, {
                 method: "DELETE",
                 headers: {
@@ -126,7 +128,7 @@ export default function AccountDetail() {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
                 body: JSON.stringify({
-                    id1: parseInt(loggedInAccountId, 10),
+                    id1: parseInt(accountId, 10),
                     id2: visitingAccountId,
                 }),
             });
@@ -165,7 +167,7 @@ export default function AccountDetail() {
         return birthDate.toLocaleDateString("nl-NL", options);
     };
 
-    const isFriendRequestSent = friendRequests.includes(parseInt(loggedInAccountId, 10));
+    const isFriendRequestSent = friendRequests.includes(parseInt(accountId, 10));
     const isFriend = friends.includes(parseInt(id, 10));
 
     return userInfo?.organisationName ? (
@@ -222,12 +224,12 @@ export default function AccountDetail() {
                     </ul>
                 </div>
                 <div className="text-center mt-3">
-                    {!isFriendRequestSent && !isFriend && id !== loggedInAccountId && (
+                    {!isFriendRequestSent && !isFriend && id !== accountId && (
                         <button className="btn btn-secondary me-4" onClick={handleAddFriend}>
                             Vriend Toevoegen
                         </button>
                     )}
-                    {isFriend && id !== loggedInAccountId && (
+                    {isFriend && id !== accountId && (
                         <button className="btn btn-secondary me-4" onClick={handleUnfriend}>
                             Vriend Verwijderen
                         </button>
@@ -273,12 +275,12 @@ export default function AccountDetail() {
                     </ul>
                 </div>
                 <div className="text-center mt-3">
-                    {!isFriendRequestSent && !isFriend && id !== loggedInAccountId && (
+                    {!isFriendRequestSent && !isFriend && id !== accountId && (
                         <button className="btn btn-secondary me-4" onClick={handleAddFriend}>
                             Vriend Toevoegen
                         </button>
                     )}
-                    {isFriend && id !== loggedInAccountId && (
+                    {isFriend && id !== accountId && (
                         <button className="btn btn-secondary me-4" onClick={handleUnfriend}>
                             Vriend Verwijderen
                         </button>

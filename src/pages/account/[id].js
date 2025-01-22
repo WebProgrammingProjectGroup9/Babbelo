@@ -16,7 +16,6 @@ export default function AccountDetail() {
     // Fetch `accountId` from localStorage
     useEffect(() => {
         const account_id = localStorage.getItem("account_id");
-        console.log(account_id + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         setAccountId(account_id);
     }, []);
 
@@ -24,7 +23,6 @@ export default function AccountDetail() {
     useEffect(() => {
         if (!accountId || !id) return;
 
-        console.log(accountId + "bbbbbbbbbbbbbbbbb");
 
         if (accountId === id) {
             console.log("Logged-in user is visiting their own profile, redirecting to /profiel.");

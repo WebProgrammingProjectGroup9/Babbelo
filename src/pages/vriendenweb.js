@@ -130,6 +130,7 @@ export default function Vriendenweb() {
         }
 
         const fofIds = await fofResponse.json();
+
         for (const fofId of fofIds) {
           if (nodes.has(fofId)) continue; // Skip duplicates
 
@@ -150,7 +151,10 @@ export default function Vriendenweb() {
             img: fofData.profileImgUrl || `https://eu.ui-avatars.com/api/?name=${fofData.firstName}+${fofData.lastName}&size=250`,
           }, 3);
 
-          addLink(friendIds, fofId);
+          // Link fofId to each friend in friendIds
+          for (const friendId of friendIds) {
+            addLink(friendId, fofId);
+          }
         }
 
         const nodeArray = Array.from(nodes.values());

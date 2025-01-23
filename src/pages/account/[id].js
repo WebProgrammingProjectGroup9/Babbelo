@@ -9,21 +9,19 @@ export default function AccountDetail() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const router = useRouter();
-    const { id } = router.query;
+    const { id } = router.query; // Get the ID from the query params
     const { isLoggedIn } = useContext(AuthContext);
-    const [accountId, setAccountId] = useState();
+    const [accountId, setAccountId] = useState(null);
 
-    useEffect(() => {
-        
-        if (!localStorage.getItem("token")) {
-            console.log("No token found, redirecting to login.");
-            router.push("/inloggen");
-        }
-    }, [isLoggedIn, router]);
-
+    // Fetch `accountId` from localStorage
     useEffect(() => {
         const account_id = localStorage.getItem("account_id");
-        setAccountId(account_id)
+        setAccountId(account_id);
+    }, []);
+
+    // Handle logic when `accountId` or `id` changes
+    useEffect(() => {
+        if (!accountId || !id) return;
 
         if (accountId === id) {
             console.log("Logged-in user is visiting their own profile, redirecting to /profiel.");
@@ -45,6 +43,7 @@ export default function AccountDetail() {
                 if (!response.ok) {
                     throw new Error("Failed to fetch user info");
                 }
+
                 const data = await response.json();
                 console.log("User info fetched successfully:", data);
                 setUserInfo(data);
@@ -79,11 +78,34 @@ export default function AccountDetail() {
             }
         };
 
-        if (id) {
-            fetchUserInfo();
-            fetchFriends();
-        }
-    }, [id]);
+        // const fetchFriendRequests = async () => {
+        //     try {
+        //         console.log("Fetching friend requests for visited profile ID:", id);
+        //         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/neo4j/request/${id}`, {
+        //             headers: {
+        //                 "Content-Type": "application/json",
+        //                 Authorization: `Bearer ${localStorage.getItem("token")}`,
+        //             },
+        //             method: "GET",
+        //         });
+        
+        //         if (!response.ok) {
+        //             throw new Error("Failed to fetch friend requests");
+        //         }
+        
+        //         const data = await response.json();
+        //         console.log("Friend requests fetched successfully for visited profile:", data);
+        //         setFriendRequests(data); // Ensure this is an array of IDs
+        //     } catch (err) {
+        //         console.error("Error fetching friend requests:", err);
+        //     }
+        // };
+        
+
+        fetchUserInfo();
+        fetchFriends();
+        // fetchFriendRequests();
+    }, [accountId, id]);
 
     const handleAddFriend = async () => {
         const visitingAccountId = parseInt(id, 10);
@@ -109,8 +131,8 @@ export default function AccountDetail() {
             }
 
             console.log("Friend request sent successfully:", responseData);
-
-            setFriendRequests((prevRequests) => [...prevRequests, parseInt(accountId, 10)]);
+            setFriendRequests((prevRequests) => [...prevRequests, visitingAccountId]);
+            window.alert("Vriendschapsverzoek succesvol verzonden!");
         } catch (error) {
             console.error("Error adding friend:", error);
         }
@@ -139,10 +161,7 @@ export default function AccountDetail() {
             }
 
             console.log("Unfriend request processed successfully");
-
-            setFriends((prevFriends) =>
-                prevFriends.filter((friendId) => friendId !== visitingAccountId)
-            );
+            setFriends((prevFriends) => prevFriends.filter((friendId) => friendId !== visitingAccountId));
         } catch (error) {
             console.error("Error unfriending:", error);
         }
@@ -167,8 +186,11 @@ export default function AccountDetail() {
         return birthDate.toLocaleDateString("nl-NL", options);
     };
 
-    const isFriendRequestSent = friendRequests.includes(parseInt(accountId, 10));
+    // const hasLoggedInUserSentFriendRequest = friendRequests.includes(parseInt(accountId, 10));
     const isFriend = friends.includes(parseInt(id, 10));
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div className="text-danger">Error: {error}</div>;
 
     return userInfo?.organisationName ? (
         // wel org
@@ -224,7 +246,7 @@ export default function AccountDetail() {
                     </ul>
                 </div>
                 <div className="text-center mt-3">
-                    {!isFriendRequestSent && !isFriend && id !== accountId && (
+                    {/* !hasLoggedInUserSentFriendRequest && */ !isFriend && id !== accountId && (
                         <button className="btn btn-secondary me-4" onClick={handleAddFriend}>
                             Vriend Toevoegen
                         </button>
@@ -275,7 +297,7 @@ export default function AccountDetail() {
                     </ul>
                 </div>
                 <div className="text-center mt-3">
-                    {!isFriendRequestSent && !isFriend && id !== accountId && (
+                    {/* !hasLoggedInUserSentFriendRequest && */ !isFriend && id !== accountId && (
                         <button className="btn btn-secondary me-4" onClick={handleAddFriend}>
                             Vriend Toevoegen
                         </button>

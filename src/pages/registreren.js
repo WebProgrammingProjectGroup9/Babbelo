@@ -260,9 +260,39 @@ export default function Registreren() {
 					</label>
 				</div>
 
-				<div className="form-group mb-2 fw-bold fs-5">
-					<label>Persoonlijke gegevens:</label>
-				</div>
+				{selected === "organisatie" ? (
+					<div className="form-group mb-4 fw-bold fs-5">
+						<label>Organisatie gegevens:</label>
+					</div>
+				) : (
+					<div className="form-group mb-4 fw-bold fs-5">
+						<label>Persoonlijke gegevens:</label>
+					</div>
+				)}
+
+				{selected === "organisatie" && (
+				<>
+					<div className="row form-group mb-4">
+						<div className="col">
+							<label>Organisatienaam:</label>
+							<input
+							type="text"
+							className="form-control"
+							placeholder="Organisatienaam"
+							value={organisationName}
+							onChange={(e) => setOrganisationName(e.target.value)}
+							required
+							style={{
+								borderRadius: "10px",
+								padding: "15px",
+								fontSize: "15px",
+								marginTop: "10px",
+							}}
+							/>
+						</div>
+					</div>
+				</>
+				)}
 
 				<div className="row mb-4">
 					<div className="col-md-6">
@@ -303,9 +333,10 @@ export default function Registreren() {
 				</div>
 
 				<div className="row mb-4">
-					<div className="col-md-6">
-						<label>Leeftijd:</label>
-						<input
+					{selected === "particulier" && (
+						<div className="col-md-6">
+							<label>Leeftijd:</label>
+							<input
 							type="date"
 							id="date"
 							className="form-control"
@@ -321,8 +352,10 @@ export default function Registreren() {
 								fontSize: "15px",
 								marginTop: "10px",
 							}}
-						/>
-					</div>
+							/>
+						</div>
+					)}
+
 
 					<div className="col-md-6">
 						<label>Gender:</label>
@@ -459,6 +492,49 @@ export default function Registreren() {
 					/>
 				</div>
 
+				{selected === "organisatie" && (
+					<>
+						<div className="row form-group mb-4">
+							<div className="col">
+								<label>Website:</label>
+								<input
+									type="text"
+									className="form-control"
+									placeholder="Website"
+									value={website}
+									onChange={(e) => setWebsite(e.target.value)}
+									style={{
+										borderRadius: "10px",
+										padding: "15px",
+										fontSize: "15px",
+										marginTop: "10px",
+									}}
+								/>
+							</div>
+						</div>
+
+						<div className="row form-group mb-4">
+							<div className="col">
+								<label>KVK-nummer:</label>
+								<input
+									type="text"
+									className="form-control"
+									placeholder="KVK-nummer"
+									value={chamberOfCommerce}
+									onChange={(e) => setChamberOfCommerce(e.target.value)}
+									required
+									style={{
+										borderRadius: "10px",
+										padding: "15px",
+										fontSize: "15px",
+										marginTop: "10px",
+									}}
+								/>
+							</div>
+						</div>
+					</>
+				)}
+
 				<div className="form-group mb-4">
 					<label htmlFor="password">Wachtwoord:</label>
 					<div className="input-group">
@@ -526,7 +602,7 @@ export default function Registreren() {
 				</div>
 				<div className="form-group mb-4">
 					<input type="file" accept="image/*" onChange={handleImageUpload} className="form-control" />
-					<button type="button" onClick={handleSave} className="btn btn-primary col-3">
+					<button type="button" onClick={handleSave} className="btn btn-primary col-3 mt-3">
 						Foto Opslaan
 					</button>
 				</div>
@@ -581,73 +657,6 @@ export default function Registreren() {
 							}}
 						/>
 					</div>
-				)}
-
-				{selected === "organisatie" && (
-					<>
-						<div className="form-group mb-2 fw-bold fs-5">
-							<label>Organisatie gegevens:</label>
-						</div>
-
-						<div className="row form-group mb-4">
-							<div className="col">
-								<label>Organisatienaam:</label>
-								<input
-									type="text"
-									className="form-control"
-									placeholder="Organisatienaam"
-									value={organisationName}
-									onChange={(e) => setOrganisationName(e.target.value)}
-									required
-									style={{
-										borderRadius: "10px",
-										padding: "15px",
-										fontSize: "15px",
-										marginTop: "10px",
-									}}
-								/>
-							</div>
-						</div>
-
-						<div className="row form-group mb-4">
-							<div className="col">
-								<label>Website:</label>
-								<input
-									type="text"
-									className="form-control"
-									placeholder="Website"
-									value={website}
-									onChange={(e) => setWebsite(e.target.value)}
-									style={{
-										borderRadius: "10px",
-										padding: "15px",
-										fontSize: "15px",
-										marginTop: "10px",
-									}}
-								/>
-							</div>
-						</div>
-
-						<div className="row form-group mb-4">
-							<div className="col">
-								<label>KVK-nummer:</label>
-								<input
-									type="text"
-									className="form-control"
-									placeholder="KVK-nummer"
-									value={chamberOfCommerce}
-									onChange={(e) => setChamberOfCommerce(e.target.value)}
-									required
-									style={{
-										borderRadius: "10px",
-										padding: "15px",
-										fontSize: "15px",
-										marginTop: "10px",
-									}}
-								/>
-							</div>
-						</div>
-					</>
 				)}
 
 				{error && (

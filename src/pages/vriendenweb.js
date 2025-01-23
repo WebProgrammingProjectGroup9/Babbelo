@@ -11,7 +11,6 @@ const GROUP_COLORS = {
   1: "blue",
   2: "yellow",
   3: "orange",
-  4: "red",
 };
 
 export default function Vriendenweb() {
@@ -151,9 +150,26 @@ export default function Vriendenweb() {
             img: fofData.profileImgUrl || `https://eu.ui-avatars.com/api/?name=${fofData.firstName}+${fofData.lastName}&size=250`,
           }, 3);
 
-          // Link fofId to each friend in friendIds
+          // Fetch the friends of this friend of friend
+          const fofFriendsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/neo4j/friend/${fofId}`, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (!fofFriendsResponse.ok) {
+            console.error(`Failed to fetch friends for fofId: ${fofId}`);
+            continue;
+          }
+
+          const fofFriendIds = await fofFriendsResponse.json();
+
+          // Check if the current friendId is in the list of friends for this fofId
           for (const friendId of friendIds) {
-            addLink(friendId, fofId);
+            if (fofFriendIds.includes(friendId)) {
+              addLink(friendId, fofId); // Add the link only if they are friends
+            }
           }
         }
 
@@ -175,7 +191,7 @@ export default function Vriendenweb() {
     };
 
     fetchGraphData();
-  }, []);
+}, [router.isReady]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div className="text-danger">Error: {error}</div>;
@@ -183,37 +199,43 @@ export default function Vriendenweb() {
   return (
     <div className="graph-wrapper container-fluid d-flex justify-content-center align-items-center vh-100">
       <ForceGraph2D
-      graphData={graphData}
-      linkWidth={3}
-      minZoom={5}
-      nodeCanvasObject={(node, ctx) => {
-        const img = imageMap.get(node.id);
-        const groupColor = GROUP_COLORS[node.group] || "gray";
+        graphData={graphData}
+        linkWidth={3}
+        linkColor={() => {
+          return "black";
+        }}
 
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(node.x, node.y, (IMAGE_SIZE + BORDER_SIZE) / 2, 0, 2 * Math.PI);
-        ctx.fillStyle = groupColor;
-        ctx.fill();
-        ctx.restore();
-
-        if (img) {
+        minZoom={5}
+        nodeCanvasObject={(node, ctx) => {
+          const img = imageMap.get(node.id);
+          const groupColor = GROUP_COLORS[node.group] || "gray";
+          
           ctx.save();
           ctx.beginPath();
-          ctx.arc(node.x, node.y, IMAGE_SIZE / 2, 0, 2 * Math.PI);
-          ctx.clip();
-          ctx.drawImage(img, node.x - IMAGE_SIZE / 2, node.y - IMAGE_SIZE / 2, IMAGE_SIZE, IMAGE_SIZE);
+          ctx.arc(node.x, node.y, (IMAGE_SIZE + BORDER_SIZE) / 2, 0, 2 * Math.PI);
+          ctx.fillStyle = groupColor;
+          ctx.shadowBlur = 20;
+          ctx.shadowColor = "black";
+          ctx.fill();
           ctx.restore();
-        }
 
-        ctx.font = "5px Sans-Serif";
-        ctx.fillStyle = "black";
-        ctx.textAlign = "center";
-        ctx.fillText(node.firstName, node.x, node.y + IMAGE_SIZE / 2 + 5);
-      }}
-      onNodeClick={(node) => {
-        router.push(`/account/${node.id}`);
-      }}
+          if (img) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(node.x, node.y, IMAGE_SIZE / 2, 0, 2 * Math.PI);
+            ctx.clip();
+            ctx.drawImage(img, node.x - IMAGE_SIZE / 2, node.y - IMAGE_SIZE / 2, IMAGE_SIZE, IMAGE_SIZE);
+            ctx.restore();
+          }
+
+          ctx.font = "5px Sans-Serif";
+          ctx.fillStyle = "black";
+          ctx.textAlign = "center";
+          ctx.fillText(node.firstName, node.x, node.y + IMAGE_SIZE / 2 + 5);
+        }}
+        onNodeClick={(node) => {
+          router.push(`/account/${node.id}`);
+        }}
     />
     </div>
   );

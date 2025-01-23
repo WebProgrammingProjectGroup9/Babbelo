@@ -759,11 +759,21 @@ h2 {
 }
 
 .swipe-container{
-  width: 50%;
+  width: 33%;
 }
 
-.btn-swipe {
+.btn-swipelike {
   width: 100px;
   height: 100px;
-  margin: 20px
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+
+.btn-swipedislike {
+  width: 100px;
+  height: 100px;
+  position: fixed;
+  bottom: 20px;
+
 }

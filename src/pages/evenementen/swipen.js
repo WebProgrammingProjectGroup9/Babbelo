@@ -141,10 +141,10 @@ export default function Swipen() {
         )}
         {!noMoreEvents && (
           <div className="d-flex justify-content-between mt-3">
-            <button className="btn-swipe btn btn-primary rounded-circle" onClick={handleDislike}>
+            <button className="btn-swipedislike btn btn-primary rounded-circle" onClick={handleDislike}>
               <i className="bi bi-x-lg h1"></i>
             </button>
-            <button className="btn-swipe btn btn-primary rounded-circle" onClick={handleLike}>
+            <button className="btn-swipelike btn btn-primary rounded-circle" onClick={handleLike}>
               <i className="bi bi-heart-fill h1"></i>
             </button>
           </div>

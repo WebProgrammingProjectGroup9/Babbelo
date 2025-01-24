@@ -99,7 +99,6 @@ export default function Profile() {
   }
 
   return userData?.organisationName ? (
-    // wel org
     <div className="container-fluid d-flex justify-content-center align-items-center vh-100">
       <div className="profile-box border shadow-lg rounded-5 p-5">
         <div className="text-center">
@@ -163,7 +162,6 @@ export default function Profile() {
       </div>
     </div>
   ) : (
-    // geen org
     <div className="container-fluid d-flex justify-content-center align-items-center vh-100">
       <div className="profile-box border shadow-lg rounded-5 p-5">
         <div className="text-center">

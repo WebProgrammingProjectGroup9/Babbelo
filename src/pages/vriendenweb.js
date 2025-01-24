@@ -62,7 +62,6 @@ export default function Vriendenweb() {
           links.push({ source, target });
         };
 
-        // Fetch the logged-in user's data
         const userResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/account/${accountId}`, {
           headers: {
             "Content-Type": "application/json",
@@ -82,7 +81,6 @@ export default function Vriendenweb() {
           img: loggedInUser.profileImgUrl || `https://eu.ui-avatars.com/api/?name=${loggedInUser.firstName}+${loggedInUser.lastName}&size=250`,
         }, 1);
 
-        // Fetch friends of the logged-in user
         const friendsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/neo4j/friend/${accountId}`, {
           headers: {
             "Content-Type": "application/json",
@@ -116,7 +114,6 @@ export default function Vriendenweb() {
           addLink(accountId, friendId);
         }
 
-        // Fetch friends of friends
         const fofResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/neo4j/friendsOfFriends/${accountId}`, {
           headers: {
             "Content-Type": "application/json",
@@ -131,7 +128,7 @@ export default function Vriendenweb() {
         const fofIds = await fofResponse.json();
 
         for (const fofId of fofIds) {
-          if (nodes.has(fofId)) continue; // Skip duplicates
+          if (nodes.has(fofId)) continue;
 
           const fofResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/account/${fofId}`, {
             headers: {
@@ -150,7 +147,6 @@ export default function Vriendenweb() {
             img: fofData.profileImgUrl || `https://eu.ui-avatars.com/api/?name=${fofData.firstName}+${fofData.lastName}&size=250`,
           }, 3);
 
-          // Fetch the friends of this friend of friend
           const fofFriendsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/neo4j/friend/${fofId}`, {
             headers: {
               "Content-Type": "application/json",
@@ -165,10 +161,9 @@ export default function Vriendenweb() {
 
           const fofFriendIds = await fofFriendsResponse.json();
 
-          // Check if the current friendId is in the list of friends for this fofId
           for (const friendId of friendIds) {
             if (fofFriendIds.includes(friendId)) {
-              addLink(friendId, fofId); // Add the link only if they are friends
+              addLink(friendId, fofId);
             }
           }
         }

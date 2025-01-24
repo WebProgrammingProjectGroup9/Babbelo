@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/components/AuthContext";
 import { useRouter } from "next/router";
 import { useSwipeable } from "react-swipeable";
-import styles from "@/styles/SwipeAnimation.module.css"; // Import CSS module for animations
+import styles from "@/styles/SwipeAnimation.module.css";
 
 export default function Swipen() {
   const { isLoggedIn } = useContext(AuthContext);
@@ -67,7 +67,7 @@ export default function Swipen() {
       } else {
         setNoMoreEvents(true);
       }
-      setSwipeDirection(""); // Reset animation
+      setSwipeDirection("");
     }, 300);
   };
 

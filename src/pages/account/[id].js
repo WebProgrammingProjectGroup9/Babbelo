@@ -9,17 +9,15 @@ export default function AccountDetail() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const router = useRouter();
-    const { id } = router.query; // Get the ID from the query params
+    const { id } = router.query;
     const { isLoggedIn } = useContext(AuthContext);
     const [accountId, setAccountId] = useState(null);
 
-    // Fetch `accountId` from localStorage
     useEffect(() => {
         const account_id = localStorage.getItem("account_id");
         setAccountId(account_id);
     }, []);
 
-    // Handle logic when `accountId` or `id` changes
     useEffect(() => {
         if (!accountId || !id) return;
 
@@ -78,33 +76,10 @@ export default function AccountDetail() {
             }
         };
 
-        // const fetchFriendRequests = async () => {
-        //     try {
-        //         console.log("Fetching friend requests for visited profile ID:", id);
-        //         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/neo4j/request/${id}`, {
-        //             headers: {
-        //                 "Content-Type": "application/json",
-        //                 Authorization: `Bearer ${localStorage.getItem("token")}`,
-        //             },
-        //             method: "GET",
-        //         });
-        
-        //         if (!response.ok) {
-        //             throw new Error("Failed to fetch friend requests");
-        //         }
-        
-        //         const data = await response.json();
-        //         console.log("Friend requests fetched successfully for visited profile:", data);
-        //         setFriendRequests(data); // Ensure this is an array of IDs
-        //     } catch (err) {
-        //         console.error("Error fetching friend requests:", err);
-        //     }
-        // };
-        
+
 
         fetchUserInfo();
         fetchFriends();
-        // fetchFriendRequests();
     }, [accountId, id]);
 
     const handleAddFriend = async () => {
@@ -185,15 +160,12 @@ export default function AccountDetail() {
         const birthDate = new Date(dob);
         return birthDate.toLocaleDateString("nl-NL", options);
     };
-
-    // const hasLoggedInUserSentFriendRequest = friendRequests.includes(parseInt(accountId, 10));
     const isFriend = friends.includes(parseInt(id, 10));
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div className="text-danger">Error: {error}</div>;
 
     return userInfo?.organisationName ? (
-        // wel org
         <div className="container-fluid d-flex justify-content-center align-items-center vh-100">
             <div className="profile-box border shadow-lg rounded-5 p-5">
                 <div className="text-center">
@@ -246,7 +218,7 @@ export default function AccountDetail() {
                     </ul>
                 </div>
                 <div className="text-center mt-3">
-                    {/* !hasLoggedInUserSentFriendRequest && */ !isFriend && id !== accountId && (
+                    {!isFriend && id !== accountId && (
                         <button className="btn btn-secondary me-4" onClick={handleAddFriend}>
                             Vriend Toevoegen
                         </button>
@@ -260,7 +232,6 @@ export default function AccountDetail() {
             </div>
         </div>
     ) : (
-        // geen org
         <div className="container-fluid d-flex justify-content-center align-items-center vh-100">
             <div className="profile-box border shadow-lg rounded-5 p-5">
                 <div className="text-center">
@@ -297,7 +268,7 @@ export default function AccountDetail() {
                     </ul>
                 </div>
                 <div className="text-center mt-3">
-                    {/* !hasLoggedInUserSentFriendRequest && */ !isFriend && id !== accountId && (
+                    {!isFriend && id !== accountId && (
                         <button className="btn btn-secondary me-4" onClick={handleAddFriend}>
                             Vriend Toevoegen
                         </button>
